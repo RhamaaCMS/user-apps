@@ -1,0 +1,76 @@
+{% extends "base_page.html" %}
+{% load i18n %}
+{% load allauth_ui %}
+{% load allauth %}
+{% load static %}
+
+{% block title %}
+    {% if process == "connect" %}
+        {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+    {% else %}
+        {% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %}
+    {% endif %}
+{% endblock %}
+
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/icons/link.svg'%}" type="image/svg+xml">
+{% endblock meta_tags %}
+
+{% block content %}
+    <div class="site-padding site-container">
+        <div class="flex justify-center items-center min-h-screen">
+            <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
+                <!-- Decorative Elements -->
+                <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary-100/10 blur-3xl -z-10"></div>
+                <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-accent-100/10 blur-3xl -z-10"></div>
+                
+                <div class="text-center">
+                    {% if process == "connect" %}
+                        <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-primary mb-4">
+                            <svg class="w-8 h-8 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                        </div>
+                        <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100">{% blocktrans with provider.name as provider %}Hubungkan {{ provider }}{% endblocktrans %}</h1>
+                        <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% blocktrans with provider.name as provider %}Anda akan menghubungkan akun baru dari {{ provider }}.{% endblocktrans %}</p>
+                    {% else %}
+                        <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-primary mb-4">
+                            <svg class="w-8 h-8 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                            </svg>
+                        </div>
+                        <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100">{% blocktrans with provider.name as provider %}Masuk Via {{ provider }}{% endblocktrans %}</h1>
+                        <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% blocktrans with provider.name as provider %}Anda akan masuk menggunakan akun {{ provider }}.{% endblocktrans %}</p>
+                    {% endif %}
+                </div>
+
+                <form class="mt-8 space-y-4" method="post">
+                    {% csrf_token %}
+                    {{ redirect_field|default_if_none:"" }}
+                    <div>
+                        <button type="submit" class="neu-btn-primary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 w-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                            {% trans "Lanjutkan" %}
+                        </button>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="{% url 'account_login' %}" class="inline-flex items-center text-sm font-medium text-primary-200 hover:text-primary-100 transition-colors">
+                            <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Kembali ke halaman login
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

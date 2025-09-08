@@ -1,0 +1,63 @@
+{% extends "base_profile.html" %}
+{% load i18n %}
+{% load static %}
+{% load socialaccount %}
+{% block title %}
+    {% trans "Account Connections" %}
+{% endblock %}
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/icons/link.svg'%}" type="image/svg+xml">
+{% endblock meta_tags %}
+
+{% block content %}
+    <div class="container mx-auto py-8">
+        <div class="neu-container-primary rounded-2xl p-8">
+            <h1 class="text-2xl font-bold mb-4 text-baseDark-100 dark:text-baseLight-100">{% trans "Account Connections" %}</h1>
+            {% if form.accounts %}
+                <p class="mb-4 text-baseDark-200 dark:text-baseLight-200">{% blocktrans %}You can sign in to your account using any of the following third-party accounts:{% endblocktrans %}</p>
+                <form method="post" action="{% url 'socialaccount_connections' %}" id="remove-connection-form">
+                    {% csrf_token %}
+                    <div class="space-y-3 neu-container-secondary p-4 rounded-xl mb-4">
+                        {% for acc in form.fields.account.choices %}
+                            {% with account=acc.0.instance.get_provider_account %}
+                                <div class="flex items-center">
+                                    <input type="radio"
+                                           id="id_account_{{ account.account.pk }}"
+                                           name="account"
+                                           value="{{ account.account.pk }}"
+                                           class="shrink-0 mt-0.5 h-5 w-5 border-baseLight-300 dark:border-baseDark-300 rounded text-primary-100 focus:ring-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-baseDark-200 dark:checked:bg-primary-100 dark:checked:border-primary-100 dark:focus:ring-offset-baseDark-200"
+                                           {% if radio.checked %}checked{% endif %} />
+                                    <label for="id_account_{{ account.account.pk }}" class="ml-2 block text-sm text-baseDark-100 dark:text-baseLight-100">
+                                        {{ account.get_brand.name }}
+                                    </label>
+                                </div>
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="neu-btn-danger py-2 px-4 inline-flex justify-center items-center gap-2 rounded-lg font-medium text-baseDark-100 dark:text-baseLight-100 transition-all duration-300"
+                            id="remove-connection-button">
+                        {% trans "Remove" %}
+                    </button>
+                </form>
+            {% else %}
+                <p class="mb-4 text-baseDark-200 dark:text-baseLight-200 neu-container-secondary p-4 rounded-xl">{% trans "You currently have no third-party accounts connected to this account." %}</p>
+            {% endif %}
+
+            <h2 class="text-lg font-semibold mt-8 mb-4 text-baseDark-100 dark:text-baseLight-100">{% trans "Add a Third-Party Account" %}</h2>
+            <div class="neu-container-secondary p-4 rounded-xl">
+                {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+                {% include "socialaccount/snippets/login_extra.html" %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('remove-connection-form').addEventListener('submit', function(event) {
+        if (!confirm('Apakah Anda yakin ingin menghapus akun ini?')) {
+            event.preventDefault();
+        }
+    });
+</script>
+{% endblock extra_js %}

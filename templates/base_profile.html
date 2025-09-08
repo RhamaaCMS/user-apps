@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+
+{% load static wagtailuserbar wagtailcore_tags wagtailimages_tags %}
+
+{% wagtail_site as current_site %}
+
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" sizes="32x32">
+{% endblock meta_tags %}
+
+{% block header %}
+    {% include "pages/accounts/components/sidebar.html" %}
+{% endblock header %}
+
+
+{% block footer %}
+{% endblock footer %}
+

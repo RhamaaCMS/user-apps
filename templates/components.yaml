@@ -1,0 +1,44 @@
+components:
+  # Base components
+  button:
+    template: components/button.html
+    context:
+      type: button
+      variant: primary
+  
+  # Form components
+  form_field:
+    template: components/form_field.html
+    context:
+      required: false
+      help_text: ""
+  
+  input:
+    template: components/input.html
+    context:
+      type: text
+      placeholder: ""
+  
+  # Layout components
+  card:
+    template: components/card.html
+    context:
+      padding: true
+  
+  container:
+    template: components/container.html
+    context:
+      fluid: false
+  
+  # Navigation components
+  navbar:
+    template: components/navbar.html
+    context:
+      fixed: false
+  
+  # Alert/Message components
+  alert:
+    template: components/alert.html
+    context:
+      type: info
+      dismissible: true

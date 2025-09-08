@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Runutin - Platform manajemen kegiatan dan kursus{% endblock %}">
+    <meta name="theme-color" content="#26899E" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'runutin/RunutinRoundedOrangeIcon.webp' %}" type="image/webp">
+    {% block meta_tags %}{% endblock %}
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    
+    <!-- Preconnect to fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    {% block extra_head %}{% endblock %}
+    
+    <style>
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animated-gradient {
+            background-size: 200% 200%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(38, 137, 158, 0.5);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(38, 137, 158, 0.8);
+        }
+        
+        /* Dark mode scrollbar */
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: rgba(58, 157, 178, 0.5);
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: rgba(58, 157, 178, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-baseLight-100 dark:bg-baseDark-300 text-baseDark-100 dark:text-baseLight-100 transition-colors duration-300 min-h-screen flex flex-col overflow-x-hidden">
+    {% block body %}
+        <div class="site-padding flex flex-col min-h-screen">
+            {% include "navigation/header.html" %}
+
+            <main class="flex-1 animate-fade-in" id="main-content">
+                {% block content %}
+    
+                {% endblock content %}
+            </main>
+
+            {% block footer %}
+                <footer class="py-5 mt-auto">
+                    <div class="site-container">
+                        <div class="flex flex-col sm:flex-row justify-between items-center border-t border-baseLight-300/30 dark:border-baseDark-300/30 pt-5">
+                            <p class="text-sm text-baseDark-200/70 dark:text-baseLight-200/70">&copy; {% now "Y" %} Runutin. All rights reserved.</p>
+                            <div class="mt-3 sm:mt-0 flex space-x-4">
+                                <a href="/about" class="text-sm text-baseDark-200/70 dark:text-baseLight-200/70 hover:text-primary-200 transition-colors">About</a>
+                                <a href="/privacy" class="text-sm text-baseDark-200/70 dark:text-baseLight-200/70 hover:text-primary-200 transition-colors">Privacy</a>
+                                <a href="/terms" class="text-sm text-baseDark-200/70 dark:text-baseLight-200/70 hover:text-primary-200 transition-colors">Terms</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            {% endblock %}
+        </div>
+    {% endblock %}
+    
+    <!-- Back to top button -->
+    <button id="back-to-top" class="fixed bottom-5 right-5 p-3 rounded-full neu-btn-primary shadow-lg opacity-0 invisible transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-200 focus:ring-offset-2 dark:focus:ring-offset-baseDark-300" aria-label="Back to top">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+    
+    {% block extra_body %}{% endblock %}
+    
+    <!-- Main JS -->
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    
+    <script>
+        // Back to top button
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopButton = document.getElementById('back-to-top');
+            
+            if (backToTopButton) {
+                // Show/hide button based on scroll position
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 300) {
+                        backToTopButton.classList.remove('opacity-0', 'invisible');
+                        backToTopButton.classList.add('opacity-100', 'visible');
+                    } else {
+                        backToTopButton.classList.add('opacity-0', 'invisible');
+                        backToTopButton.classList.remove('opacity-100', 'visible');
+                    }
+                });
+                
+                // Scroll to top when clicked
+                backToTopButton.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // Theme toggle functionality (if theme toggle exists)
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                });
+            }
+            
+            // Initialize theme from localStorage or system preference
+            if (!('theme' in localStorage)) {
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            } else if (localStorage.theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

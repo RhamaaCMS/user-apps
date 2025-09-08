@@ -1,0 +1,93 @@
+{% extends "base_page.html" %}
+{% load i18n %}
+{% load static %}
+{% load account %}
+{% load widget_tweaks %}
+
+{% block title %}
+    {% trans "Confirm Email Address" %}
+{% endblock %}
+
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/icons/email.svg'%}" type="image/svg+xml">
+{% endblock meta_tags %}
+
+{% block content %}
+<div class="site-padding site-container">
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
+            <!-- Decorative Elements -->
+            <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary-100/10 blur-3xl -z-10"></div>
+            <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-accent-100/10 blur-3xl -z-10"></div>
+            
+            <div class="text-center">
+                <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-primary mb-4">
+                    <svg class="w-8 h-8 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-1">{% trans "Konfirmasi Alamat Email" %}</h1>
+                <div class="inline-flex items-center justify-center gap-2 h-1 w-12 bg-gradient-to-r from-primary-100 to-accent-100 rounded-full mb-4"></div>
+            </div>
+            
+            {% if confirmation %}
+                {% user_display confirmation.email_address.user as user_display %}
+                
+                {% if can_confirm %}
+                    <div class="neu-container-secondary rounded-xl p-6 mb-6">
+                        <p class="text-sm text-baseDark-100 dark:text-baseLight-100 text-center">
+                            {% blocktrans with confirmation.email_address.email as email %}Silakan konfirmasi bahwa <a href="mailto:{{ email }}" class="text-primary-200 hover:underline">{{ email }}</a> adalah alamat email untuk pengguna {{ user_display }}.{% endblocktrans %}
+                        </p>
+                    </div>
+                    
+                    <form method="post" action="{{ action_url }}" class="mt-8">
+                        {% csrf_token %}
+                        {{ redirect_field }}
+                        
+                        <button type="submit" class="neu-btn-primary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 w-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            {% trans "Konfirmasi" %}
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="neu-container-danger rounded-xl p-6 mb-6 bg-danger/5">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-danger mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                            <p class="text-sm text-baseDark-100 dark:text-baseLight-100">
+                                {% blocktrans with email=confirmation.email_address.email %}Tidak dapat mengkonfirmasi {{ email }} karena sudah dikonfirmasi oleh akun lain.{% endblocktrans %}
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="neu-container-warning rounded-xl p-6 mb-6 bg-warning/5">
+                    <div class="flex items-start">
+                        <svg class="w-5 h-5 text-warning mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <p class="text-sm text-baseDark-100 dark:text-baseLight-100">
+                            {% url 'account_email' as email_url %}
+                            {% blocktrans %}Link konfirmasi email ini telah kedaluwarsa atau tidak valid. Silakan <a href="{{ email_url }}" class="text-primary-200 hover:underline">minta permintaan konfirmasi email baru</a>.{% endblocktrans %}
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+            
+            <div class="mt-8 flex justify-center">
+                <a href="{% url 'account_login' %}" class="neu-btn-secondary py-3 px-6 rounded-lg inline-flex items-center transition-all duration-300 hover:shadow-lg hover:scale-105">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    {% trans "Kembali ke Halaman Login" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,57 @@
+{% extends "base_page.html" %}
+{% load i18n %}
+{% load static %}
+{% load allauth_ui %}
+{% block title %}
+    {% trans "Sign Out" %}
+{% endblock %}
+
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/icons/crying-cat.svg'%}" type="image/svg+xml">
+{% endblock meta_tags %}
+
+{% block content %}
+    <div class="site-padding site-container">
+        <div class="flex justify-center items-center min-h-screen">
+            <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
+                <!-- Decorative Elements -->
+                <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-warning/10 blur-3xl -z-10"></div>
+                <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-danger/10 blur-3xl -z-10"></div>
+                
+                <div class="text-center">
+                    <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-warning mb-4">
+                        <svg class="w-8 h-8 text-warning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-1">{% trans "Keluar" %}</h1>
+                    <div class="inline-flex items-center justify-center gap-2 h-1 w-12 bg-gradient-to-r from-warning to-danger rounded-full mb-4"></div>
+                    <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% trans "Apakah Anda yakin ingin keluar?" %}</p>
+                </div>
+                <form class="mt-6 space-y-4" method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    {{ redirect_field }}
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="/" class="neu-btn-secondary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 flex-1 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            {% trans "Batal" %}
+                        </a>
+                        <button type="submit" class="neu-btn-danger py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 flex-1 transition-all duration-300 hover:shadow-lg hover:scale-105">
+                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            {% trans "Keluar" %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

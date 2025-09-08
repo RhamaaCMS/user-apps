@@ -1,0 +1,28 @@
+{% extends "base_page.html" %}
+{% load i18n %}
+{% load allauth_ui %}
+{% block title %}
+    {% trans "Third-Party Login Failure" %}
+{% endblock %}
+
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/icons/error.svg'%}" type="image/svg+xml">
+{% endblock meta_tags %}
+
+{% block content %}
+    <div class="site-padding site-container">
+        <div class="flex justify-center items-center min-h-screen">
+            <div class="w-full max-w-md neu-container-warning rounded-2xl p-8">
+                <div class="text-center">
+                    <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100">{% trans "Third-Party Login Failure" %}</h1>
+                    <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% trans "An error occurred while attempting to login via your third-party account." %}</p>
+                </div>
+                <div class="mt-6">
+                    <a href="{% url 'account_login' %}" class="neu-btn-primary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-lg font-semibold text-baseDark-100 dark:text-baseLight-100 w-full transition-all duration-300">
+                        {% trans "Return to Login" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

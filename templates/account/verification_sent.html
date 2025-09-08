@@ -1,0 +1,59 @@
+{% extends "base_page.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    {% trans "Confirm Email Address" %}
+{% endblock %}
+
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/icons/email.svg'%}" type="image/svg+xml">
+{% endblock meta_tags %}
+
+{% block content %}
+<div class="site-padding site-container">
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
+            <!-- Decorative Elements -->
+            <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-success/10 blur-3xl -z-10"></div>
+            <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-primary-100/10 blur-3xl -z-10"></div>
+            
+            <div class="text-center">
+                <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-success mb-4">
+                    <svg class="w-8 h-8 text-success" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
+                    </svg>
+                </div>
+                <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-1">{% trans "Konfirmasi Alamat Email" %}</h1>
+                <div class="inline-flex items-center justify-center gap-2 h-1 w-12 bg-gradient-to-r from-primary-100 to-success rounded-full mb-4"></div>
+            </div>
+            
+            <div class="mt-6 neu-container-secondary rounded-xl p-6">
+                <p class="text-sm text-baseDark-100 dark:text-baseLight-100 text-center">
+                    {% blocktrans %}
+                    Kami telah mengirimkan email kepada Anda untuk verifikasi. Ikuti link yang diberikan untuk menyelesaikan proses pendaftaran. Jika Anda tidak melihat email verifikasi di kotak masuk utama Anda, periksa folder spam Anda. Silakan hubungi kami jika Anda tidak menerima email verifikasi dalam beberapa menit.
+                    {% endblocktrans %}
+                </p>
+                
+                <div class="mt-6 flex items-center p-4 rounded-xl neu-container-info bg-info/5">
+                    <svg class="w-5 h-5 text-info mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="text-xs text-baseDark-200/70 dark:text-baseLight-200/70">
+                        {% trans "Harap periksa kotak masuk email Anda serta folder spam jika Anda tidak menerima email verifikasi." %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-center">
+                <a href="{% url 'account_login' %}" class="neu-btn-primary py-3 px-6 rounded-lg inline-flex items-center transition-all duration-300 hover:shadow-lg hover:scale-105">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    {% trans "Kembali ke Halaman Login" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

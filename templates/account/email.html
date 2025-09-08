@@ -1,0 +1,104 @@
+{% extends "base_profile.html" %}
+{% load i18n %}
+{% load allauth_ui %}
+{% load static %}
+{% block title %}
+    Email
+{% endblock title %}
+{% block meta_tags %}
+    <link rel="icon" href="{% static 'images/icons/email.svg'%}" type="image/svg+xml">
+{% endblock meta_tags %}
+{% block content %}
+    <div class="container mx-auto py-8">
+        <div class="bg-baseLight-100 dark:bg-baseDark-300 rounded-lg shadow-md p-6">
+            <h1 class="text-xl font-semibold text-baseDark-300 dark:text-baseLight-100 mb-4">{% trans "Email Addresses" %}</h1>
+            {% if emailaddresses %}
+                <p class="text-baseDark-300 dark:text-baseLight-100 mb-4">
+                    {% trans 'The following email addresses are associated with your account:' %}
+                </p >
+                <form method="post" action="{% url 'account_email' %}" class="space-y-4" id="email-actions-form">
+                    {{ redirect_field }}
+                    {% csrf_token %}
+                    <div class="space-y-2">
+                        {% for radio in emailaddress_radios %}
+                            {% with emailaddress=radio.emailaddress %}
+                                <div class="relative flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input id="{{ radio.id }}"
+                                               name="email"
+                                               value="{{ emailaddress.email }}"
+                                               type="radio"
+                                               class="focus:ring-primary-200 h-4 w-4 text-primary-200 border-gray-300 rounded"
+                                               {% if radio.checked %}checked{% endif %}>
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="{{ radio.id }}" class="font-medium text-baseDark-300 dark:text-baseLight-100">
+                                            {{ emailaddress.email }}
+                                            {% if emailaddress.verified %}
+                                                <span class="inline-flex items-center ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-success text-baseLight-100">
+                                                    {% trans "verified" %}
+                                                </span>
+                                            {% endif %}
+                                            {% if emailaddress.primary %}
+                                                <span class="inline-flex items-center ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-200 text-baseLight-100">
+                                                    {% trans "primary" %}
+                                                </span>
+                                            {% endif %}
+                                        </label >
+                                    </div>
+                                </div>
+                                {% if emailaddress.primary %}
+                                    <p class="text-danger text-sm mt-1">{% trans "You cannot remove your primary email address." %}</p>
+                                {% else %}
+                                    <button name="action_remove" type="submit" class="btn btn-danger" id="remove-email-button">
+                                        {% trans "Remove" %}
+                                    </button>
+                                {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
+                    <div class="mt-6 flex space-x-2">
+                        <button name="action_primary" type="submit" class="btn btn-primary">
+                            {% trans "Make Primary" %}
+                        </button >
+                        <button name="action_send" type="submit" class="btn btn-secondary">
+                            {% trans "Re-send verification" %}
+                        </button >
+                    </div>
+                </form >
+            {% else %}
+                {% include "account/snippets/warn_no_email.html" %}
+            {% endif %}
+            {% if can_add_email %}
+                <div class="mt-8 pt-8 border-t border-baseDark-200 dark:border-baseLight-200">
+                    <h2 class="text-lg font-semibold text-baseDark-300 dark:text-baseLight-100 mb-4">{% trans "Add Email Address" %}</h2>
+                    <form method="post" action="{% url 'account_email' %}" class="flex items-center space-x-3" id="add-email-form">
+                        {% csrf_token %}
+                        {{ form.email }}
+                        <button type="submit" name="action_add" class="btn btn-primary">{% trans "Add Email" %}</button >
+                    </form >
+                    {% if form.errors.email %}
+                        <div class="mt-2 text-sm text-danger">
+                            {% for error in form.errors.email %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('email-actions-form').addEventListener('submit', function(event) {
+        const clickedButton = event.submitter;
+        if (clickedButton && clickedButton.id === 'remove-email-button') {
+            if (!confirm('Apakah Anda yakin ingin menghapus alamat email ini?')) {
+                event.preventDefault();
+            }
+        }
+    });
+</script>
+{% endblock extra_js %}
