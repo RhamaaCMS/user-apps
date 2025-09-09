@@ -19,7 +19,6 @@ class UserProfile(models.Model):
         validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")]
     )
     address = models.TextField(blank=True)
-    is_public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

@@ -1,0 +1,88 @@
+<button id="theme-toggle" type="button" class="neu-button rounded-full w-9 h-9 flex items-center justify-center text-gray-500 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-300 dark:focus:ring-primary-700 transition-all duration-300 hover:scale-110 group">
+    <!-- Sun icon - visible in light mode -->
+    <svg id="theme-toggle-dark-icon" class="w-5 h-5 dark:hidden transform transition-transform duration-500 group-hover:rotate-45" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+    </svg>
+    <!-- Moon icon - visible in dark mode -->
+    <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden dark:block transform transition-transform duration-500 group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+      </svg>
+</button>
+
+<script>
+    // Optimized theme toggle script
+    (function() {
+        // Eksekusi setelah DOM selesai dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup theme toggle
+            const btn = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            
+            if (!btn) return;
+            
+            // Toggle theme function - optimized for performance
+            function toggleTheme() {
+                const isDark = document.documentElement.classList.contains('dark');
+                
+                // Animasi rotasi saat toggle
+                if (isDark) {
+                    darkIcon.classList.add('rotate-180');
+                    setTimeout(() => darkIcon.classList.remove('rotate-180'), 500);
+        } else {
+                    lightIcon.classList.add('rotate-180');
+                    setTimeout(() => lightIcon.classList.remove('rotate-180'), 500);
+                }
+                
+                // Toggle theme class
+                document.documentElement.classList[isDark ? 'remove' : 'add']('dark');
+                
+                // Update color-scheme
+                document.documentElement.style.colorScheme = isDark ? 'light' : 'dark';
+                
+                // Save state to localStorage
+                localStorage.setItem('color-theme', isDark ? 'light' : 'dark');
+            }
+            
+            // Set initial theme from localStorage or system preference
+            function initTheme() {
+                const storedTheme = localStorage.getItem('color-theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const shouldBeDark = storedTheme === 'dark' || (!storedTheme && prefersDark);
+                
+                if (shouldBeDark) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.colorScheme = 'dark';
+                } else {
+            document.documentElement.classList.remove('dark');
+                    document.documentElement.style.colorScheme = 'light';
+                }
+            }
+            
+            // Add click event listener
+            btn.addEventListener('click', toggleTheme);
+            
+            // Initialize theme if not already done
+            if (typeof window.themeInitialized === 'undefined') {
+                initTheme();
+                
+                // Listen for system theme changes (only if no user preference)
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (!localStorage.getItem('color-theme')) {
+                        document.documentElement.classList[e.matches ? 'add' : 'remove']('dark');
+                        document.documentElement.style.colorScheme = e.matches ? 'dark' : 'light';
+                    }
+                });
+                
+                window.themeInitialized = true;
+            }
+        });
+    })();
+</script>
+
+<style>
+.rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.5s ease-in-out;
+}
+</style>

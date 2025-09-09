@@ -1,17 +1,17 @@
 {% load widget_tweaks %}
 
-<div class="mb-6">
-    <label class="block mb-2 text-sm font-medium text-baseDark-100 dark:text-baseLight-100" for="{{ field.id_for_label }}">
+<div class="g-form-group mb-6">
+    <label class="g-label block mb-2 text-sm font-medium" for="{{ field.id_for_label }}" style="color: var(--g-color-text-label);">
         {{ field.label }}
     </label>
     
     {% if field.errors %}
-        {% render_field field placeholder="" class="w-full neu-input-colorful rounded-lg p-3 border-2 border-danger-200 dark:border-danger-100 text-baseDark-100 dark:text-baseLight-100" %}
+        {% render_field field placeholder="" class="w-full rounded-lg p-3 border-2 transition-colors duration-200" style="background-color: var(--g-color-surface-field); color: var(--g-color-text-context); border-color: var(--g-color-critical-100);" %}
     {% else %}
-        {% render_field field placeholder="" class="w-full neu-input-colorful rounded-lg p-3 text-baseDark-100 dark:text-baseLight-100" %}
+        {% render_field field placeholder="" class="w-full rounded-lg p-3 border transition-colors duration-200" style="background-color: var(--g-color-surface-field); color: var(--g-color-text-context); border-color: var(--g-color-border-field-default);" %}
     {% endif %}
     
     {% for error in field.errors %}
-        <p class="mt-2 text-sm text-danger-200 dark:text-danger-100">{{ error }}</p>
+        <p class="g-text-error mt-2 text-sm">{{ error }}</p>
     {% endfor %}
 </div>

@@ -31,7 +31,7 @@ def profile_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profil berhasil diperbarui.')
-            return redirect('profile')  # Redirect ke halaman profil setelah berhasil update
+            return redirect('users:profile')  # Redirect ke halaman profil setelah berhasil update
     else:
         # Prepopulate form dengan data dari user dan user profile
         form = UserProfileForm(instance=user_profile)
@@ -43,63 +43,14 @@ def profile_view(request):
     # Ambil email sekunder yang terdaftar pada user (kecuali email utama)
     secondary_emails = EmailAddress.objects.filter(user=request.user).exclude(primary=True)
 
-    return render(request, 'pages/accounts/profile.html', {
+    return render(request, 'pages/users/profile.html', {
         'form': form,
         'user_profile': user_profile,
         'social_accounts': social_accounts,  # Kirim data akun sosial ke template
         'secondary_emails': secondary_emails,  # Kirim data email sekunder ke template
     })
 
-def public_profile_view(request, username):
-    # Cari user berdasarkan username
-    user = get_object_or_404(User, username=username)
-    
-    # Ambil UserProfile terkait
-    user_profile = user.userprofile
-    
-    # Cek apakah profil publik atau tidak
-    if not user_profile.is_public:
-        raise Http404("This user's profile is not public.")
-    
-    # Ambil akun sosial yang terhubung
-    social_accounts = SocialAccount.objects.filter(user=user)
-    
-    # Kumpulkan data dari akun sosial
-    social_data = []
-    for account in social_accounts:
-        provider_data = {
-            'provider': account.provider,
-            'extra_data': account.extra_data,
-        }
-        
-        # Tambahkan data spesifik provider
-        if account.provider == 'github':
-            provider_data.update({
-                'avatar': account.extra_data.get('avatar_url'),
-                'company': account.extra_data.get('company'),
-                'blog': account.extra_data.get('blog'),
-                'location': account.extra_data.get('location'),
-                'bio': account.extra_data.get('bio'),
-                'public_repos': account.extra_data.get('public_repos'),
-                'followers': account.extra_data.get('followers'),
-                'following': account.extra_data.get('following'),
-            })
-        elif account.provider == 'google':
-            provider_data.update({
-                'avatar': account.extra_data.get('picture'),
-                'email': account.extra_data.get('email'),
-                'name': account.extra_data.get('name'),
-                'given_name': account.extra_data.get('given_name'),
-                'family_name': account.extra_data.get('family_name'),
-            })
-        
-        social_data.append(provider_data)
-    
-    return render(request, 'pages/accounts/public_profile.html', {
-        'user': user,
-        'user_profile': user_profile,
-        'social_data': social_data,
-    })
+
 
 # Fungsi untuk mengambil foto profil dari akun sosial
 def get_social_account_avatar(user):

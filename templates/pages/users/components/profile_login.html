@@ -1,0 +1,81 @@
+{% load static %}
+
+<div class="flex items-center space-x-3">
+    {% if user.is_authenticated %}
+        <!-- User Avatar Dropdown -->
+        <div class="hs-dropdown relative inline-flex [--placement:bottom-right]">
+            <button id="hs-dropdown-account" type="button" 
+                class="hs-dropdown-toggle size-[38px] inline-flex justify-center items-center rounded-full overflow-hidden transition-all duration-300 hover:scale-110 hover:shadow-md" 
+                style="background-color: var(--g-color-surface-field); border: 1px solid var(--g-color-border-furniture);"
+                aria-expanded="false">
+                {% if user.userprofile.profile_picture %}
+                    <img class="shrink-0 size-[38px] rounded-full object-cover" src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}">
+                {% else %}
+                    <div class="w-full h-full rounded-full flex items-center justify-center" style="background-color: var(--g-color-primary);">
+                        <span class="text-white font-semibold text-sm">{{ user.username|first|upper }}</span>
+                    </div>
+                {% endif %}
+            </button>
+
+            <div class="hs-dropdown-menu transition-[opacity,margin] duration-300 hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 rounded-xl p-2 mt-2 shadow-lg z-[9998]" 
+                 style="background-color: var(--g-color-surface-menus); border: 1px solid var(--g-color-border-furniture);"
+                 aria-labelledby="hs-dropdown-account">
+                
+                <!-- User Info -->
+                <div class="py-3 px-4 -m-2 rounded-t-xl" style="background-color: var(--g-color-surface-field-inactive);">
+                    <div class="flex items-center gap-x-3">
+                        <div>
+                            {% if user.userprofile.profile_picture %}
+                                <img class="w-10 h-10 rounded-full object-cover" src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}">
+                            {% else %}
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background-color: var(--g-color-primary);">
+                                    <span class="text-white font-semibold">{{ user.username|first|upper }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="grow">
+                            <span class="block text-sm font-semibold" style="color: var(--g-color-text-context);">
+                                {{ user.username }}
+                            </span>
+                            <span class="block text-sm truncate" style="color: var(--g-color-text-meta);">{{ user.email }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu Items -->
+                <div class="py-2">
+                    <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-md" 
+                       style="color: var(--g-color-text-context); background-color: var(--g-color-surface-field-inactive);"
+                       href="{% url 'users:profile' %}">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                        </svg>
+                        Profil Saya
+                    </a>
+                    <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-md" 
+                       style="color: var(--g-color-critical-200); background-color: var(--g-color-critical-50);"
+                       href="/accounts/logout">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1a1 1 0 1 1-2 0V6H4v12h9v-1a1 1 0 1 1 2 0v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" clip-rule="evenodd"/>
+                            <path fill-rule="evenodd" d="M13.293 10.293a1 1 0 0 1 1.414 0L17 12.586l2.293-2.293a1 1 0 1 1 1.414 1.414L18.414 14l2.293 2.293a1 1 0 0 1-1.414 1.414L17 15.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L15.586 14l-2.293-2.293a1 1 0 0 1 0-1.414Z" clip-rule="evenodd"/>
+                        </svg>
+                        Keluar
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <a class="py-2 px-4 rounded-lg shadow-md transition-all duration-300 hover:scale-105 hover:shadow-lg" 
+           style="background-color: var(--g-color-surface-button-default); color: var(--g-color-text-button); border: 1px solid var(--g-color-border-button-outline-default);"
+           href="/accounts/login/">
+            <span class="flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.363.5H9Zm2 0h7a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z" clip-rule="evenodd"/>
+                </svg>
+                Masuk
+            </span>
+        </a>
+    {% endif %}
+</div>
+

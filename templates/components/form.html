@@ -4,12 +4,12 @@
 {% var render_fields=render_fields|default:"true" %}
 {% var use_default_button=use_default_button|default:"true" %}
 
-<form method="post" action="{{ url }}" class="neu-container-primary rounded-2xl p-8">
+<form method="post" action="{{ url }}" class="rounded-2xl p-8" style="background-color: var(--g-color-surface-field); border: 1px solid var(--g-color-border-furniture);">
     {% csrf_token %}
     
     <!-- Non-field Errors -->
     {% for error in form.non_field_errors %}
-        <div class="mb-4 p-3 rounded-lg bg-danger-100/20 dark:bg-danger-200/20 text-danger-200 dark:text-danger-100">
+        <div class="g-alert g-alert-error mb-4">
             {{ error }}
         </div>
     {% endfor %}
@@ -31,7 +31,7 @@
     <!-- Submit Button -->
     {% if use_default_button == "true" %}
         <div class="mt-8">
-            <button type="submit" class="neu-btn-primary text-baseDark-100 dark:text-baseLight-100 py-3 px-6 rounded-lg w-full sm:w-auto">
+            <button type="submit" class="py-3 px-6 rounded-lg w-full sm:w-auto transition-all duration-300 hover:shadow-lg" style="background-color: var(--g-color-surface-button-default); color: var(--g-color-text-button); border: 1px solid var(--g-color-border-button-outline-default);">
                 {{ button_text }}
             </button>
         </div>
