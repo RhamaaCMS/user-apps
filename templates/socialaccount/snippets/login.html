@@ -4,12 +4,21 @@
 
 {% if socialaccount_providers %}
     {% if not SOCIALACCOUNT_ONLY %}
-        <div class="relative my-6 before:absolute before:inset-0 before:top-1/2 before:-translate-y-1/2 before:border-t before:border-baseLight-300/50 dark:before:border-baseDark-300/30 flex justify-center">
-            <span class="bg-baseLight-100 dark:bg-baseDark-300 relative z-10 px-4 text-sm font-medium text-baseDark-100 dark:text-baseLight-100">
-                {% translate "Atau" %}
-            </span>
+        <div class="relative my-8 flex items-center justify-center  ">
+            <span class="h-0.5 w-full bg-border-muted/60"></span>
+            {# Divider badge with offset shadow #}
+            <div class="relative mx-4">
+                <div class="absolute inset-0 bg-playful-coral border border-playful-ink rounded-full translate-x-0.5 translate-y-0.5"></div>
+                <span class="relative inline-flex items-center gap-2 rounded-full border border-playful-ink bg-playful-butter px-4 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-playful-ink shadow-sm">
+                    <span class="emoji-animated" aria-hidden="true">✨</span>
+                    {% translate "Atau" %}
+                </span>
+            </div>
+            <span class="h-0.5 w-full bg-border-muted/60"></span>
         </div>
     {% endif %}
-    {% include "socialaccount/snippets/provider_list.html" with process=process %}
-    {% include "socialaccount/snippets/login_extra.html" %}
+    <div class="space-y-4  " data-stagger>
+        {% include "socialaccount/snippets/provider_list.html" with process=process %}
+        {% include "socialaccount/snippets/login_extra.html" %}
+    </div>
 {% endif %}

@@ -13,79 +13,108 @@
 {% endblock meta_tags %}
 
 {% block content %}
-<div class="site-padding site-container">
-    <div class="flex justify-center items-center min-h-screen">
-        <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
-            <!-- Decorative Elements -->
-            <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary-100/10 blur-3xl -z-10"></div>
-            <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-accent-100/10 blur-3xl -z-10"></div>
-            
-            <div class="text-center">
-                <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-primary mb-4">
-                    <svg class="w-8 h-8 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                </div>
-                <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-1">{% trans "Konfirmasi Alamat Email" %}</h1>
-                <div class="inline-flex items-center justify-center gap-2 h-1 w-12 bg-gradient-to-r from-primary-100 to-accent-100 rounded-full mb-4"></div>
-            </div>
-            
-            {% if confirmation %}
-                {% user_display confirmation.email_address.user as user_display %}
-                
-                {% if can_confirm %}
-                    <div class="neu-container-secondary rounded-xl p-6 mb-6">
-                        <p class="text-sm text-baseDark-100 dark:text-baseLight-100 text-center">
-                            {% blocktrans with confirmation.email_address.email as email %}Silakan konfirmasi bahwa <a href="mailto:{{ email }}" class="text-primary-200 hover:underline">{{ email }}</a> adalah alamat email untuk pengguna {{ user_display }}.{% endblocktrans %}
-                        </p>
-                    </div>
-                    
-                    <form method="post" action="{{ action_url }}" class="mt-8">
-                        {% csrf_token %}
-                        {{ redirect_field }}
-                        
-                        <button type="submit" class="neu-btn-primary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 w-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<div class="site-padding site-container py-16">
+    <div class="flex flex-col items-center justify-center min-h-[60vh] space-y-10">
+        <div class="text-center max-w-2xl">
+            <span class="inline-flex items-center gap-2 px-5 py-2 rounded-full border-2 border-playful-ink bg-playful-butter text-playful-ink text-sm font-semibold uppercase tracking-wide">
+                📫 {% trans "Konfirmasi email" %}
+            </span>
+            <h1 class="mt-6 text-3xl md:text-4xl font-bold text-text-primary">{% trans "Ayuk pastikan ini emailmu" %}</h1>
+            <p class="mt-3 text-base md:text-lg text-text-secondary">
+                {% trans "Tinggal satu langkah lagi agar semua notifikasi penting bisa sampai ke kamu." %}
+            </p>
+        </div>
+
+        <div class="w-full max-w-3xl">
+            <div class="relative neo-card hover-lift   overflow-hidden">
+                <div class="absolute -top-14 -right-16 h-44 w-44 rounded-full bg-playful-sky/45 blur-3xl"></div>
+                <div class="absolute -bottom-20 -left-16 h-48 w-48 rounded-full bg-playful-mint/45 blur-3xl"></div>
+
+                <div class="relative space-y-6">
+                    <div class="flex flex-col items-center gap-4 text-center">
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-playful-ink bg-playful-cream text-playful-ink">
+                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
                             </svg>
-                            {% trans "Konfirmasi" %}
-                        </button>
-                    </form>
-                {% else %}
-                    <div class="neu-container-danger rounded-xl p-6 mb-6 bg-danger/5">
-                        <div class="flex items-start">
-                            <svg class="w-5 h-5 text-danger mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                            </svg>
-                            <p class="text-sm text-baseDark-100 dark:text-baseLight-100">
-                                {% blocktrans with email=confirmation.email_address.email %}Tidak dapat mengkonfirmasi {{ email }} karena sudah dikonfirmasi oleh akun lain.{% endblocktrans %}
+                        </div>
+                        <p class="text-sm md:text-base text-text-secondary max-w-xl">
+                            {% trans "Langkah ini memastikan kami mengirim info penting ke alamat email yang benar milikmu." %}
+                        </p>
+                    </div>
+
+                    {% if confirmation %}
+                        {% user_display confirmation.email_address.user as user_display %}
+
+                        {% if can_confirm %}
+                            <div class="rounded-xl border-2 border-playful-ink bg-white/80 p-6">
+                                <p class="text-sm md:text-base text-text-secondary text-center">
+                                    {% blocktrans with confirmation.email_address.email as email %}Silakan konfirmasi bahwa <a href="mailto:{{ email }}" class="font-semibold text-text-link underline-offset-4 hover:underline">{{ email }}</a> adalah alamat email untuk pengguna {{ user_display }}.{% endblocktrans %}
+                                </p>
+                            </div>
+
+                            <form method="post" action="{{ action_url }}" class="pt-6">
+                                {% csrf_token %}
+                                {{ redirect_field }}
+
+                                <button type="submit" class="neo-btn hover-bounce w-full justify-center gap-2 py-3 text-base">
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    {% trans "Konfirmasi" %}
+                                </button>
+                            </form>
+                        {% else %}
+                            <div class="rounded-xl border-2 border-playful-ink bg-playful-coral/40 p-6">
+                                <div class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-playful-ink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                    </svg>
+                                    <p class="text-sm md:text-base text-text-secondary text-left">
+                                        {% blocktrans with email=confirmation.email_address.email %}Tidak dapat mengkonfirmasi {{ email }} karena sudah dikonfirmasi oleh akun lain.{% endblocktrans %}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="rounded-xl border-2 border-playful-ink bg-playful-lavender/40 p-6">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-playful-ink flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                                <p class="text-sm md:text-base text-text-secondary text-left">
+                                    {% url 'account_email' as email_url %}
+                                    {% blocktrans %}Link konfirmasi email ini telah kedaluwarsa atau tidak valid. Silakan <a href="{{ email_url }}" class="font-semibold text-text-link underline-offset-4 hover:underline">minta konfirmasi baru</a>.{% endblocktrans %}
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-xl border-2 border-playful-ink bg-playful-cream/70 p-4">
+                            <h2 class="text-lg font-semibold text-playful-ink">{% trans "Belum dapat email?" %}</h2>
+                            <p class="mt-2 text-sm text-text-secondary">
+                                {% trans "Coba cek folder spam atau gunakan tombol kirim ulang di halaman email." %}
+                            </p>
+                        </div>
+                        <div class="rounded-xl border-2 border-playful-ink bg-playful-mint/50 p-4">
+                            <h2 class="text-lg font-semibold text-playful-ink">{% trans "Gunakan email lain" %}</h2>
+                            <p class="mt-2 text-sm text-text-secondary">
+                                {% trans "Tambahkan alamat email alternatif dari pengaturan profilmu." %}
                             </p>
                         </div>
                     </div>
-                {% endif %}
-            {% else %}
-                <div class="neu-container-warning rounded-xl p-6 mb-6 bg-warning/5">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-warning mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                        <p class="text-sm text-baseDark-100 dark:text-baseLight-100">
-                            {% url 'account_email' as email_url %}
-                            {% blocktrans %}Link konfirmasi email ini telah kedaluwarsa atau tidak valid. Silakan <a href="{{ email_url }}" class="text-primary-200 hover:underline">minta permintaan konfirmasi email baru</a>.{% endblocktrans %}
-                        </p>
+
+                    <div class="flex justify-center pt-2">
+                        <a href="{% url 'account_login' %}" class="neo-btn-outline hover-lift hover-bounce justify-center gap-2 px-6 py-3 text-base">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            {% trans "Kembali ke login" %}
+                        </a>
                     </div>
                 </div>
-            {% endif %}
-            
-            <div class="mt-8 flex justify-center">
-                <a href="{% url 'account_login' %}" class="neu-btn-secondary py-3 px-6 rounded-lg inline-flex items-center transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    {% trans "Kembali ke Halaman Login" %}
-                </a>
             </div>
         </div>
     </div>

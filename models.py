@@ -1,12 +1,14 @@
 # models.py
-from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.db import models
 from wagtail.users.models import UserProfile as WagtailUserProfile
+
 
 # Fungsi ini masih diperlukan untuk migrasi meskipun kita tidak lagi menggunakannya
 def profile_picture_upload_path(instance, filename):
-    return f'profile_pictures/{instance.user.id}/{filename}'
+    return f"profile_pictures/{instance.user.id}/{filename}"
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -16,7 +18,12 @@ class UserProfile(models.Model):
     phone_number = models.CharField(
         max_length=15,
         blank=True,
-        validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")]
+        validators=[
+            RegexValidator(
+                regex=r"^\+?1?\d{9,15}$",
+                message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
+            )
+        ],
     )
     address = models.TextField(blank=True)
 
@@ -30,7 +37,7 @@ class UserProfile(models.Model):
         #     if previous.profile_picture and previous.profile_picture != self.profile_picture:
         #         previous.profile_picture.delete(save=False)
         super().save(*args, **kwargs)
-        
+
     @property
     def profile_picture(self):
         """

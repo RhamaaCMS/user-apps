@@ -1,14 +1,38 @@
 {% extends "mfa/totp/deactivate_form.html" %}
 {% load i18n %}
 {% load allauth_ui %}
+{% load widget_tweaks %}
 {% block content %}
     {% trans "Deactivate Authenticator App" as heading %}
     {% blocktranslate asvar subheading %}You are about to deactivate authenticator app based authentication. Are you sure?{% endblocktranslate %}
     {% #container heading=heading subheading=subheading %}
     {% url 'mfa_deactivate_totp' as action_url %}
-    {% #form form=form url=action_url button_text=button_text use_default_button="false"%}
-    {% csrf_token %}
-    <button type="submit" class="btn btn-warning">{% trans "Deactivate" %}</button>
+    {% #form form=form url=action_url button_text=button_text use_default_button="false" %}
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+        <section class="neo-card border-playful-ink bg-playful-coral/35 p-6    -up">
+            <div class="flex items-start gap-3">
+                <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-butter text-playful-ink">⚠️</span>
+                <div class="space-y-1">
+                    <p class="text-sm font-semibold text-text-primary">{% translate "Menonaktifkan authenticator akan mengurangi keamanan akunmu." %}</p>
+                    <p class="text-xs text-text-secondary">{% translate "Pastikan kamu benar-benar ingin melanjutkan dan punya metode MFA cadangan." %}</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <button type="submit" class="neo-btn hover-bounce justify-center gap-2 bg-playful-coral text-playful-ink">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 18L18 6"></path>
+                    <path d="M6 6l12 12"></path>
+                </svg>
+                {% trans "Nonaktifkan" %}
+            </button>
+            <a href="{% url "mfa_index" %}" class="neo-btn-outline hover-bounce justify-center gap-2">
+                {% trans "Batal" %}
+            </a>
+        </div>
     {% /form %}
     {% /container %}
 {% endblock content %}

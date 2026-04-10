@@ -14,43 +14,58 @@
 {% endblock meta_tags %}
 
 {% block content %}
-    <div class="site-padding site-container">
-        <div class="flex justify-center items-center min-h-screen">
-            <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
-                <!-- Decorative Elements -->
-                <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-accent-100/10 blur-3xl -z-10"></div>
-                <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-primary-100/10 blur-3xl -z-10"></div>
-                
-                <div class="text-center">
-                    <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-primary mb-4">
-                        <svg class="w-8 h-8 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <line x1="20" y1="8" x2="20" y2="14"></line>
-                            <line x1="23" y1="11" x2="17" y2="11"></line>
-                        </svg>
-                    </div>
-                    <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-1">{% trans "Daftar Sosial" %}</h1>
-                    <div class="inline-flex items-center justify-center gap-2 h-1 w-12 bg-gradient-to-r from-primary-100 to-accent-100 rounded-full mb-4"></div>
-                    <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">
-                        {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
-                            Anda akan menggunakan akun {{provider_name}} untuk login ke {{site_name}}.
-                            Sebagai langkah terakhir, silakan lengkapi formulir berikut:
-                        {% endblocktrans %}
-                    </p>
-                </div>
+    <div class="relative h-[100dvh] w-full overflow-hidden bg-surface-page p-3 sm:p-4">
+        {# Background decorative elements #}
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <div class="absolute top-20 -left-12 w-32 h-32 bg-playful-butter border border-playful-ink rounded-3xl rotate-12 opacity-20"></div>
+            <div class="absolute bottom-32 -right-8 w-28 h-28 bg-playful-mint border border-playful-ink rounded-2xl -rotate-6 opacity-20"></div>
+        </div>
 
-                <form class="mt-5 space-y-4" method="post" action="{% url 'socialaccount_signup' %}">
+        <div class="relative h-full flex items-center justify-center">
+            {# Main card with offset shadow #}
+            <div class="relative h-full w-full max-w-3xl">
+                <div class="absolute inset-0 bg-playful-butter border border-playful-ink rounded-2xl translate-x-3 translate-y-3"></div>
+                <div class="relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border border-playful-ink bg-playful-cream px-5 py-5 shadow-sm sm:px-6 sm:py-6">
+                    {# Corner badge #}
+                    <div class="absolute -top-3 -right-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-playful-ink bg-playful-mint shadow-sm">
+                        <span class="text-base">✍️</span>
+                    </div>
+                    <!-- Decorative playful blobs -->
+                    <div aria-hidden="true" class="absolute -top-10 -right-8 h-32 w-32 rounded-full bg-playful-sky/40 opacity-60 blur-3xl"></div>
+                    <div aria-hidden="true" class="absolute -bottom-14 -left-10 h-36 w-36 rounded-full bg-playful-rose/40 opacity-70 blur-3xl"></div>
+
+                    <div class="relative text-center space-y-1.5">
+                        {# Icon with offset shadow #}
+                        <div class="relative inline-block mx-auto">
+                            <div class="absolute inset-0 bg-playful-coral border border-playful-ink rounded-full translate-x-1 translate-y-1"></div>
+                            <div class="relative flex h-12 w-12 items-center justify-center rounded-full border border-playful-ink bg-playful-butter text-playful-ink hover-bounce shadow-sm">
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                                </svg>
+                            </div>
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{% trans "Daftar Sosial" %}</h1>
+                        <p class="mx-auto max-w-xl text-xs text-text-secondary">
+                            {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
+                                Lanjutkan dengan akun {{provider_name}} untuk masuk ke {{site_name}}.
+                            {% endblocktrans %}
+                        </p>
+                    </div>
+
+                <form class="relative mt-3 min-h-0 flex-1 space-y-3" method="post" action="{% url 'socialaccount_signup' %}">
                     {% csrf_token %}
                     {{ redirect_field }}
-                    
+
                     {% if form.errors %}
-                        <div class="neu-container-warning p-4 rounded-xl mb-4 bg-warning/10">
-                            <ul>
+                        <div class="rounded-xl border-2 border-playful-coral bg-playful-coral/30 p-3 text-sm text-text-primary">
+                            <ul class="space-y-1.5 text-left">
                                 {% for field, errors in form.errors.items %}
                                     {% for error in errors %}
-                                        <li class="text-danger text-sm flex items-center gap-2">
-                                            <svg class="w-4 h-4 text-danger flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <li class="flex items-center gap-2">
+                                            <svg class="h-5 w-5 text-playful-coral" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <circle cx="12" cy="12" r="10"></circle>
                                                 <line x1="12" y1="8" x2="12" y2="12"></line>
                                                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -62,63 +77,72 @@
                             </ul>
                         </div>
                     {% endif %}
-                    
+
                     {% for field in form %}
-                        <div class="space-y-2">
-                            <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-baseDark-100 dark:text-baseLight-100 mb-1">
+                        <div class="space-y-1">
+                            <label for="{{ field.id_for_label }}" class="block text-xs font-semibold text-text-primary sm:text-sm">
                                 {{ field.label }}
-                                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                                {% if field.field.required %}<span class="text-playful-coral">*</span>{% endif %}
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-playful-ink">
                                     {% if field.name == 'username' %}
-                                        <svg class="w-5 h-5 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                             <circle cx="12" cy="7" r="4"></circle>
                                         </svg>
                                     {% elif field.name == 'email' %}
-                                        <svg class="w-5 h-5 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                             <polyline points="22,6 12,13 2,6"></polyline>
                                         </svg>
                                     {% else %}
-                                        <svg class="w-5 h-5 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                                            <path d="M2 17l10 5 10-5"></path>
-                                            <path d="M2 12l10 5 10-5"></path>
+                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 2 2 7l10 5 10-5-10-5z"></path>
+                                            <path d="m2 17 10 5 10-5"></path>
+                                            <path d="m2 12 10 5 10-5"></path>
                                         </svg>
                                     {% endif %}
                                 </div>
-                                {% render_field field class="py-3 pl-10 pr-4 block w-full neu-input-primary rounded-xl text-baseDark-100 dark:text-baseLight-100 placeholder:text-baseDark-200/50 dark:placeholder:text-baseLight-200/50 focus:ring-primary-100 focus:border-primary-100" placeholder=field.label %}
+                                {% render_field field class="neo-input pl-12 pr-4 py-2 text-text-primary placeholder:text-text-placeholder focus:border-playful-mint focus-visible:outline-playful-butter" placeholder=field.label %}
                                 {% if field.help_text %}
-                                    <p class="mt-1 text-xs text-baseDark-200/70 dark:text-baseLight-200/70">{{ field.help_text }}</p>
+                                    {% if field.name == 'password1' or field.name == 'password2' %}
+                                        <p class="mt-1 text-[11px] leading-relaxed text-text-secondary">Gunakan kata sandi kuat minimal 8 karakter.</p>
+                                    {% else %}
+                                        <p class="mt-1 text-xs text-text-secondary">{{ field.help_text }}</p>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
                     {% endfor %}
-                    
-                    <div>
-                        <button type="submit" class="neu-btn-primary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 w-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="8.5" cy="7" r="4"></circle>
-                                <line x1="20" y1="8" x2="20" y2="14"></line>
-                                <line x1="23" y1="11" x2="17" y2="11"></line>
-                            </svg>
-                            {% trans "Daftar" %}
-                        </button>
-                    </div>
-                    
-                    <div class="text-center mt-4">
-                        <a href="{% url 'account_login' %}" class="inline-flex items-center text-sm font-medium text-primary-200 hover:text-primary-100 transition-colors">
-                            <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="19" y1="12" x2="5" y2="12"></line>
-                                <polyline points="12 19 5 12 12 5"></polyline>
-                            </svg>
-                            Kembali ke halaman login
-                        </a>
+
+                    <div class="space-y-2 pt-0.5">
+                        {# Submit button with offset shadow #}
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-playful-coral border border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                            <button type="submit" class="relative neo-btn hover-bounce w-full py-2 gap-2 border border-playful-ink shadow-sm">
+                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                                </svg>
+                                {% trans "Daftar" %}
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="{% url 'account_login' %}" class="inline-flex items-center justify-center gap-2 text-sm font-medium text-text-link hover:text-playful-mint transition-colors">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
+                                </svg>
+                                Kembali ke halaman login
+                            </a>
+                        </div>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     </div>

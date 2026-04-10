@@ -1,0 +1,16 @@
+{% load i18n %}{% autoescape off %}
+{% blocktranslate %}Halo {{ user.first_name|default:user.email }},
+
+Terima kasih telah mendaftar! Untuk menyelesaikan proses pendaftaran, 
+silakan verifikasi alamat email Anda dengan mengklik link di bawah ini:
+
+{{ activate_url }}
+
+Link verifikasi ini berlaku selama 3 hari.
+
+Jika Anda tidak membuat akun ini, abaikan email ini.
+
+Salam,
+Tim Runutin
+{% endblocktranslate %}
+{% endautoescape %}

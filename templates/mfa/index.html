@@ -4,70 +4,160 @@
 {% block content %}
     {% trans "Two-Factor Authentication" as heading %}
     {% #container heading=heading %}
-    {% if "totp" in MFA_SUPPORTED_TYPES %}
-        <h2 class="mt-6 mb-3 text-lg">{% translate "Authenticator App" %}</h2>
-        {% if authenticators.totp %}
-            <p class="my-2">
-                {% translate "Authentication using an authenticator app is active." %}
-                <div>
-                    <a href="{% url "mfa_activate_totp" %}"
-                       role="button"
-                       class="my-3 btn btn-warning">{% translate "Deactivate" %}</a>
-                </div>
-            </p>
-        {% else %}
-            <p class="my-2">{% translate "An authenticator app is not active." %}</p>
-            <a href="{% url "mfa_activate_totp" %}"
-               role="button"
-               class="btn btn-neutral">{% translate "Activate" %}</a>
-        {% endif %}
-    {% endif %}
-    {% if "webauthn" in MFA_SUPPORTED_TYPES %}
-        <div class="divider divider-neutral"></div>
-        <h2 class="mt-6 mb-3 text-lg">{% translate "Security Keys" %}</h2>
-        {% if authenticators.webauthn|length %}
-            <p class="my-2">
-                {% blocktranslate count count=authenticators.webauthn|length %}You have added {{ count }} security key.{% plural %}You have added {{ count }} security keys.{% endblocktranslate %}
-            </p>
-            <a href="{% url "mfa_list_webauthn" %}"
-               role="button"
-               class="btn btn-neutral">{% translate "Manage" %}</a>
-        {% else %}
-            <p class="my-2">{% translate "No security keys have been added." %}</p>
-            <a href="{% url "mfa_add_webauthn" %}"
-               role="button"
-               class="btn btn-neutral">{% translate "Add" %}</a>
-        {% endif %}
-    {% endif %}
-    {% if "recovery_codes" in MFA_SUPPORTED_TYPES %}
-        <div class="divider divider-neutral"></div>
-        {% with total_count=authenticators.recovery_codes.generate_codes|length unused_count=authenticators.recovery_codes.get_unused_codes|length %}
-            <h2 class="mt-6 mb-3 text-lg">{% translate "Recovery Codes" %}</h2>
-            <p>
-                {% if authenticators.recovery_codes %}
-                    {% blocktranslate count unused_count=unused_count %}There is {{ unused_count }} out of {{ total_count }} recovery codes available.{% plural %}There are {{ unused_count }} out of {{ total_count }} recovery codes available.{% endblocktranslate %}
-                {% else %}
-                    {% translate "No recovery codes set up." %}
-                {% endif %}
-            </p>
-            {% if is_mfa_enabled %}
-                <div class="flex flex-col justify-evenly my-3 md:flex-row gap-1">
-                    {% if authenticators.recovery_codes %}
-                        {% if unused_count > 0 %}
-                            <a href="{% url "mfa_view_recovery_codes" %}"
-                               role="button"
-                               class="btn btn-neutral">{% translate "View" %}</a>
-                            <a href="{% url "mfa_download_recovery_codes" %}"
-                               role="button"
-                               class="btn btn-neutral">{% translate "Download" %}</a>
+    <div class="space-y-6">
+        {% if "totp" in MFA_SUPPORTED_TYPES %}
+            <section class="neo-card border-playful-ink bg-playful-cream/70 p-6 space-y-4    -up">
+                <header class="flex items-start justify-between gap-4">
+                    <div class="space-y-1">
+                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-playful-ink">{% translate "Authenticator App" %}</p>
+                        {% if authenticators.totp %}
+                            <h2 class="text-lg font-bold text-text-primary">{% translate "Authenticator aktif" %}</h2>
+                            <p class="text-sm text-text-secondary">{% translate "Kode dari aplikasi authenticator akan diminta saat kamu masuk." %}</p>
+                        {% else %}
+                            <h2 class="text-lg font-bold text-text-primary">{% translate "Belum terhubung" %}</h2>
+                            <p class="text-sm text-text-secondary">{% translate "Aktifkan authenticator untuk keamanan ekstra." %}</p>
                         {% endif %}
+                    </div>
+                    <span class="hidden sm:flex h-12 w-12 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-butter text-playful-ink">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </span>
+                </header>
+                <div class="flex flex-wrap gap-3">
+                    {% if authenticators.totp %}
+                        <a href="{% url "mfa_activate_totp" %}"
+                           class="neo-btn-outline hover-bounce justify-center gap-2">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M10 15L12 13 14 15"></path>
+                                <path d="M12 3v10"></path>
+                                <path d="M21 12a9 9 0 1 1-9-9"></path>
+                            </svg>
+                            {% translate "Nonaktifkan" %}
+                        </a>
+                        <a href="{% url "mfa_activate_totp" %}"
+                           class="neo-btn hover-bounce justify-center gap-2">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12a9 9 0 1 1-9-9"></path>
+                            </svg>
+                            {% translate "Kelola" %}
+                        </a>
+                    {% else %}
+                        <a href="{% url "mfa_activate_totp" %}"
+                           class="neo-btn hover-bounce justify-center gap-2">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 5v6"></path>
+                                <path d="M9 8h6"></path>
+                                <path d="M21 12a9 9 0 1 1-9-9"></path>
+                            </svg>
+                            {% translate "Aktifkan" %}
+                        </a>
                     {% endif %}
-                    <a href="{% url "mfa_generate_recovery_codes" %}"
-                       role="button"
-                       class="btn btn-neutral">{% translate "Generate" %}</a>
                 </div>
-            {% endif %}
-        {% endwith %}
-    {% endif %}
+            </section>
+        {% endif %}
+
+        {% if "webauthn" in MFA_SUPPORTED_TYPES %}
+            <section class="neo-card border-playful-ink bg-playful-sky/40 p-6 space-y-4    -up">
+                <header class="flex items-start justify-between gap-4">
+                    <div class="space-y-1">
+                        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-playful-ink">{% translate "Security Keys" %}</p>
+                        <h2 class="text-lg font-bold text-text-primary">{% translate "Kunci keamanan" %}</h2>
+                        <p class="text-sm text-text-secondary">
+                            {% if authenticators.webauthn|length %}
+                                {% blocktranslate count count=authenticators.webauthn|length %}Kamu telah menambahkan {{ count }} kunci keamanan.{% plural %}Kamu telah menambahkan {{ count }} kunci keamanan.{% endblocktranslate %}
+                            {% else %}
+                                {% translate "Belum ada kunci keamanan yang terdaftar." %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <span class="hidden sm:flex h-12 w-12 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-lavender/60 text-playful-ink">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 21v-2a4 4 0 0 1 4-4h2"></path>
+                            <path d="M3 7a9 9 0 0 1 18 0"></path>
+                            <path d="M12 4v9"></path>
+                        </svg>
+                    </span>
+                </header>
+                <div class="flex flex-wrap gap-3">
+                    {% if authenticators.webauthn|length %}
+                        <a href="{% url "mfa_list_webauthn" %}"
+                           class="neo-btn hover-bounce justify-center gap-2">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 16l7-7 7 7"></path>
+                            </svg>
+                            {% translate "Kelola" %}
+                        </a>
+                    {% endif %}
+                    <a href="{% url "mfa_add_webauthn" %}"
+                       class="neo-btn-outline hover-bounce justify-center gap-2">
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 5v14"></path>
+                            <path d="M5 12h14"></path>
+                        </svg>
+                        {% translate "Tambah" %}
+                    </a>
+                </div>
+            </section>
+        {% endif %}
+
+        {% if "recovery_codes" in MFA_SUPPORTED_TYPES %}
+            {% with total_count=authenticators.recovery_codes.generate_codes|length unused_count=authenticators.recovery_codes.get_unused_codes|length %}
+                <section class="neo-card border-playful-ink bg-playful-mint/40 p-6 space-y-4    -up">
+                    <header class="flex items-start justify-between gap-4">
+                        <div class="space-y-1">
+                            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-playful-ink">{% translate "Recovery Codes" %}</p>
+                            <h2 class="text-lg font-bold text-text-primary">{% translate "Kode pemulihan" %}</h2>
+                            <p class="text-sm text-text-secondary">
+                                {% if authenticators.recovery_codes %}
+                                    {% blocktranslate count unused_count=unused_count total_count=total_count %}Tersisa {{ unused_count }} dari {{ total_count }} kode pemulihan.{% plural %}Tersisa {{ unused_count }} dari {{ total_count }} kode pemulihan.{% endblocktranslate %}
+                                {% else %}
+                                    {% translate "Belum ada kode pemulihan yang dihasilkan." %}
+                                {% endif %}
+                            </p>
+                        </div>
+                        <span class="hidden sm:flex h-12 w-12 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-coral/40 text-playful-ink">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18l6-6-6-6"></path>
+                                <path d="M6 6h6"></path>
+                            </svg>
+                        </span>
+                    </header>
+                    {% if is_mfa_enabled %}
+                        <div class="flex flex-wrap gap-3">
+                            {% if authenticators.recovery_codes and unused_count > 0 %}
+                                <a href="{% url "mfa_view_recovery_codes" %}"
+                                   class="neo-btn-outline hover-bounce justify-center gap-2">
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    {% translate "Lihat" %}
+                                </a>
+                                <a href="{% url "mfa_download_recovery_codes" %}"
+                                   class="neo-btn-outline hover-bounce justify-center gap-2">
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 5v14"></path>
+                                        <path d="M5 12h14"></path>
+                                    </svg>
+                                    {% translate "Unduh" %}
+                                </a>
+                            {% endif %}
+                            <a href="{% url "mfa_generate_recovery_codes" %}"
+                               class="neo-btn hover-bounce justify-center gap-2">
+                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 17l4 4 4-4"></path>
+                                    <path d="M12 3v18"></path>
+                                </svg>
+                                {% translate "Generate" %}
+                            </a>
+                        </div>
+                    {% endif %}
+                </section>
+            {% endwith %}
+        {% endif %}
+    </div>
     {% /container %}
 {% endblock content %}

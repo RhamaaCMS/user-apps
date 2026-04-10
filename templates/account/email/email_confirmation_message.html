@@ -1,0 +1,275 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Verifikasi Email" %}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .email-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        
+        .email-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        .email-body h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .email-body p {
+            font-size: 15px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .verification-section {
+            background-color: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        
+        .verification-section p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 40px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 30px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+        }
+        
+        .cta-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .link-section {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .link-section p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .link-section a {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .email-footer {
+            background-color: #f5f5f5;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .email-footer p {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .email-footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .social-links {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #856404;
+        }
+        
+        @media (max-width: 600px) {
+            .email-container {
+                border-radius: 0;
+            }
+            
+            .email-body {
+                padding: 20px 15px;
+            }
+            
+            .email-header h1 {
+                font-size: 24px;
+            }
+            
+            .cta-button {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <h1>🎉 {% trans "Selamat Datang!" %}</h1>
+            <p>{% trans "Verifikasi email Anda untuk melanjutkan" %}</p>
+        </div>
+        
+        <!-- Body -->
+        <div class="email-body">
+            <h2>{% trans "Halo" %} {{ user.first_name|default:user.email }},</h2>
+            
+            <p>
+                {% blocktranslate %}
+                Terima kasih telah mendaftar! Untuk menyelesaikan proses pendaftaran, 
+                silakan verifikasi alamat email Anda dengan mengklik tombol di bawah ini.
+                {% endblocktranslate %}
+            </p>
+            
+            <!-- Verification Section -->
+            <div class="verification-section">
+                <p>
+                    <strong>{% trans "Mengapa kami meminta verifikasi?" %}</strong><br>
+                    {% trans "Verifikasi email memastikan akun Anda aman dan membantu kami mengirim notifikasi penting ke email yang benar." %}
+                </p>
+            </div>
+            
+            <!-- CTA Button -->
+            <div class="cta-container">
+                <a href="{{ activate_url }}" class="cta-button">
+                    ✓ {% trans "Verifikasi Email Saya" %}
+                </a>
+            </div>
+            
+            <p style="text-align: center; color: #999; font-size: 13px; margin: 20px 0;">
+                {% trans "atau" %}
+            </p>
+            
+            <!-- Link Section (Fallback) -->
+            <div class="link-section">
+                <p>{% trans "Jika tombol di atas tidak berfungsi, salin dan tempel link berikut di browser Anda:" %}</p>
+                <a href="{{ activate_url }}">{{ activate_url }}</a>
+            </div>
+            
+            <!-- Warning -->
+            <div class="warning">
+                <strong>⏰ {% trans "Penting:" %}</strong>
+                {% blocktranslate %}
+                Link verifikasi ini berlaku selama 3 hari. Jika link sudah expired, 
+                Anda dapat meminta email verifikasi baru dari halaman login.
+                {% endblocktranslate %}
+            </div>
+            
+            <p>
+                {% blocktranslate %}
+                Jika Anda tidak membuat akun ini, abaikan email ini. 
+                Akun Anda tidak akan diaktifkan sampai Anda mengklik link verifikasi.
+                {% endblocktranslate %}
+            </p>
+            
+            <p>
+                {% trans "Salam," %}<br>
+                <strong>{% trans "Tim Runutin" %}</strong>
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <p>© {% now "Y" %} Runutin. {% trans "Semua hak dilindungi." %}</p>
+            
+            <div class="social-links">
+                <a href="https://runutin.com">{% trans "Website" %}</a>
+                <a href="https://twitter.com/runutin">{% trans "Twitter" %}</a>
+                <a href="https://instagram.com/runutin">{% trans "Instagram" %}</a>
+            </div>
+            
+            <p style="margin-top: 20px; font-size: 11px;">
+                {% trans "Anda menerima email ini karena mendaftar di Runutin." %}<br>
+                <a href="{{ settings.SITE_URL }}/accounts/email/">{% trans "Kelola preferensi email" %}</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

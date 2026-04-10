@@ -1,57 +1,186 @@
-{% extends "base_page.html" %}
+{% extends 'base_page.html' %}
 {% load i18n %}
 {% load static %}
 {% load allauth_ui %}
+{% load cache %}
 {% block title %}
-    {% trans "Sign Out" %}
+  {% trans 'Sign Out' %}
 {% endblock %}
 
 {% block meta_tags %}
-    <link rel="icon" href="{% static 'images/icons/crying-cat.svg'%}" type="image/svg+xml">
-{% endblock meta_tags %}
+  <link rel="icon" href="{% static 'images/icons/crying-cat.svg' %}" type="image/svg+xml" />
+{% endblock %}
 
 {% block content %}
-    <div class="site-padding site-container">
-        <div class="flex justify-center items-center min-h-screen">
-            <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
-                <!-- Decorative Elements -->
-                <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-warning/10 blur-3xl -z-10"></div>
-                <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-danger/10 blur-3xl -z-10"></div>
-                
-                <div class="text-center">
-                    <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-warning mb-4">
-                        <svg class="w-8 h-8 text-warning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <section class="relative bg-surface-page py-16 overflow-hidden">
+    {# Background decorative elements #}
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute top-20 -left-12 w-32 h-32 bg-playful-butter border-2 border-playful-ink rounded-3xl rotate-12 opacity-20"></div>
+      <div class="absolute bottom-32 -right-8 w-28 h-28 bg-playful-coral border-2 border-playful-ink rounded-2xl -rotate-6 opacity-20"></div>
+    </div>
+
+    <div class="relative site-padding site-container">
+      {% if request and request.in_preview_panel %}
+        <div class="mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center gap-14 text-center">
+          <div class="space-y-5">
+            {# Badge with offset shadow #}
+            <div class="relative inline-block">
+              <div class="absolute inset-0 bg-playful-mint border-2 border-playful-ink rounded-full translate-x-1 translate-y-1"></div>
+              <span class="relative emoji-chip inline-flex items-center gap-2 rounded-full border-2 border-playful-ink bg-playful-sky px-5 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-playful-ink hover-bounce shadow-sm">
+                <span class="emoji-animated" aria-hidden="true">🌈</span>
+                {% trans 'Butuh jeda sebentar?' %}
+              </span>
+            </div>
+            <h1 class="text-3xl font-semibold text-playful-ink md:text-4xl">{% trans 'Keluar dari Runutin' %}</h1>
+            <p class="mx-auto max-w-xl text-base md:text-lg text-text-secondary">
+              {% trans 'Kami akan menyimpan progresmu. Kamu bisa kembali kapan pun siap.' %}
+            </p>
+          </div>
+          <div class="w-full">
+            {# Main card with offset shadow #}
+            <div class="relative">
+              <div class="absolute inset-0 bg-playful-coral border-2 border-playful-ink rounded-2xl translate-x-3 translate-y-3"></div>
+              <div class="relative neo-card border-playful-ink bg-surface-card p-8 sm:p-10 shadow-sm rounded-2xl">
+                {# Corner badge #}
+                <div class="absolute -top-3 -right-3 w-12 h-12 bg-playful-butter border-2 border-playful-ink rounded-full flex items-center justify-center shadow-sm z-10">
+                  <span class="text-xl">🚪</span>
+                </div>
+                <div class="space-y-6">
+                  {# Icon with offset shadow #}
+                  <div class="relative inline-block mx-auto">
+                    <div class="absolute inset-0 bg-playful-butter border-2 border-playful-ink rounded-full translate-x-1 translate-y-1"></div>
+                    <div class="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full border-2 border-playful-coral bg-playful-coral/30 text-playful-ink shadow-sm">
+                      <span class="emoji-animated text-3xl" aria-hidden="true">🚪</span>
+                    </div>
+                  </div>
+                  <div class="space-y-3">
+                    <h2 class="text-2xl font-semibold text-playful-ink">{% trans 'Yakin ingin keluar?' %}</h2>
+                    {# Info panel with offset shadow #}
+                    <div class="relative">
+                      <div class="absolute inset-0 bg-playful-butter border-2 border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                      <div class="relative neo-panel border-playful-mint bg-playful-mint/30 p-4 shadow-sm rounded-xl">
+                        <p class="text-sm md:text-base text-text-secondary">
+                          {% trans 'Tindakan ini akan mengakhiri sesi saat ini. Kamu bisa masuk lagi kapan pun.' %}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <form class="space-y-5" method="post" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    {{ redirect_field }}
+                    <div class="grid gap-4 sm:grid-cols-2" data-stagger>
+                      {# Cancel button with offset shadow #}
+                      <div class="relative">
+                        <div class="absolute inset-0 bg-playful-sky border-2 border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                        <a href="/" class="relative neo-btn-outline hover-bounce justify-center gap-2 py-3 border-playful-ink shadow-sm">
+                          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                          </svg>
+                          <span class="sr-only md:not-sr-only">{% trans 'Batal' %}</span>
+                        </a>
+                      </div>
+                      {# Logout button with offset shadow #}
+                      <div class="relative">
+                        <div class="absolute inset-0 bg-playful-butter border-2 border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                        <button type="submit" class="relative neo-btn bg-playful-coral text-playful-ink hover-bounce justify-center gap-2 py-3 border-playful-ink shadow-sm w-full">
+                          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                             <polyline points="16 17 21 12 16 7"></polyline>
                             <line x1="21" y1="12" x2="9" y2="12"></line>
-                        </svg>
+                          </svg>
+                          <span class="sr-only md:not-sr-only">{% trans 'Keluar' %}</span>
+                        </button>
+                      </div>
                     </div>
-                    <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-1">{% trans "Keluar" %}</h1>
-                    <div class="inline-flex items-center justify-center gap-2 h-1 w-12 bg-gradient-to-r from-warning to-danger rounded-full mb-4"></div>
-                    <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% trans "Apakah Anda yakin ingin keluar?" %}</p>
+                  </form>
                 </div>
-                <form class="mt-6 space-y-4" method="post" action="{% url 'account_logout' %}">
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        {% cache 300 'account-logout-card' request.user.pk %}
+        <div class="mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center gap-14 text-center">
+          <div class="space-y-5">
+            {# Badge with offset shadow #}
+            <div class="relative inline-block">
+              <div class="absolute inset-0 bg-playful-mint border-2 border-playful-ink rounded-full translate-x-1 translate-y-1"></div>
+              <span class="relative emoji-chip inline-flex items-center gap-2 rounded-full border-2 border-playful-ink bg-playful-sky px-5 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-playful-ink hover-bounce shadow-sm">
+                <span class="emoji-animated" aria-hidden="true">🌈</span>
+                {% trans 'Butuh jeda sebentar?' %}
+              </span>
+            </div>
+            <h1 class="text-3xl font-semibold text-playful-ink md:text-4xl">{% trans 'Keluar dari Runutin' %}</h1>
+            <p class="mx-auto max-w-xl text-base md:text-lg text-text-secondary">
+              {% trans 'Kami akan menyimpan progresmu. Kamu bisa kembali kapan pun siap.' %}
+            </p>
+          </div>
+          <div class="w-full">
+            {# Main card with offset shadow #}
+            <div class="relative">
+              <div class="absolute inset-0 bg-playful-coral border-2 border-playful-ink rounded-2xl translate-x-3 translate-y-3"></div>
+              <div class="relative neo-card border-playful-ink bg-surface-card p-8 sm:p-10 shadow-sm rounded-2xl">
+                {# Corner badge #}
+                <div class="absolute -top-3 -right-3 w-12 h-12 bg-playful-butter border-2 border-playful-ink rounded-full flex items-center justify-center shadow-sm z-10">
+                  <span class="text-xl">🚪</span>
+                </div>
+                <div class="space-y-6">
+                  {# Icon with offset shadow #}
+                  <div class="relative inline-block mx-auto">
+                    <div class="absolute inset-0 bg-playful-butter border-2 border-playful-ink rounded-full translate-x-1 translate-y-1"></div>
+                    <div class="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full border-2 border-playful-coral bg-playful-coral/30 text-playful-ink shadow-sm">
+                      <span class="emoji-animated text-3xl" aria-hidden="true">🚪</span>
+                    </div>
+                  </div>
+                  <div class="space-y-3">
+                    <h2 class="text-2xl font-semibold text-playful-ink">{% trans 'Yakin ingin keluar?' %}</h2>
+                    {# Info panel with offset shadow #}
+                    <div class="relative">
+                      <div class="absolute inset-0 bg-playful-butter border-2 border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                      <div class="relative neo-panel border-playful-mint bg-playful-mint/30 p-4 shadow-sm rounded-xl">
+                        <p class="text-sm md:text-base text-text-secondary">
+                          {% trans 'Tindakan ini akan mengakhiri sesi saat ini. Kamu bisa masuk lagi kapan pun.' %}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <form class="space-y-5" method="post" action="{% url 'account_logout' %}">
                     {% csrf_token %}
                     {{ redirect_field }}
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="/" class="neu-btn-secondary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 flex-1 transition-all duration-300 hover:shadow-lg hover:scale-105">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="19" y1="12" x2="5" y2="12"></line>
-                                <polyline points="12 19 5 12 12 5"></polyline>
-                            </svg>
-                            {% trans "Batal" %}
+                    <div class="grid gap-4 sm:grid-cols-2" data-stagger>
+                      {# Cancel button with offset shadow #}
+                      <div class="relative">
+                        <div class="absolute inset-0 bg-playful-sky border-2 border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                        <a href="/" class="relative neo-btn-outline hover-bounce justify-center gap-2 py-3 border-playful-ink shadow-sm">
+                          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                          </svg>
+                          <span class="sr-only md:not-sr-only">{% trans 'Batal' %}</span>
                         </a>
-                        <button type="submit" class="neu-btn-danger py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 flex-1 transition-all duration-300 hover:shadow-lg hover:scale-105">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                <polyline points="16 17 21 12 16 7"></polyline>
-                                <line x1="21" y1="12" x2="9" y2="12"></line>
-                            </svg>
-                            {% trans "Keluar" %}
+                      </div>
+                      {# Logout button with offset shadow #}
+                      <div class="relative">
+                        <div class="absolute inset-0 bg-playful-butter border-2 border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                        <button type="submit" class="relative neo-btn bg-playful-coral text-playful-ink hover-bounce justify-center gap-2 py-3 border-playful-ink shadow-sm w-full">
+                          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                          </svg>
+                          <span class="sr-only md:not-sr-only">{% trans 'Keluar' %}</span>
                         </button>
+                      </div>
                     </div>
-                </form>
+                  </form>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+        {% endcache %}
+      {% endif %}
     </div>
-{% endblock content %}
+  </section>
+{% endblock %}

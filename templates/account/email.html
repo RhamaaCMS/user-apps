@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load allauth_ui %}
 {% load static %}
+{% load widget_tweaks %}
 {% block title %}
     Email
 {% endblock title %}
@@ -9,83 +10,145 @@
     <link rel="icon" href="{% static 'images/icons/email.svg'%}" type="image/svg+xml">
 {% endblock meta_tags %}
 {% block content %}
-    <div class="container mx-auto py-8">
-        <div class="bg-baseLight-100 dark:bg-baseDark-300 rounded-lg shadow-md p-6">
-            <h1 class="text-xl font-semibold text-baseDark-300 dark:text-baseLight-100 mb-4">{% trans "Email Addresses" %}</h1>
-            {% if emailaddresses %}
-                <p class="text-baseDark-300 dark:text-baseLight-100 mb-4">
-                    {% trans 'The following email addresses are associated with your account:' %}
-                </p >
-                <form method="post" action="{% url 'account_email' %}" class="space-y-4" id="email-actions-form">
-                    {{ redirect_field }}
-                    {% csrf_token %}
-                    <div class="space-y-2">
-                        {% for radio in emailaddress_radios %}
-                            {% with emailaddress=radio.emailaddress %}
-                                <div class="relative flex items-start">
-                                    <div class="flex items-center h-5">
-                                        <input id="{{ radio.id }}"
-                                               name="email"
-                                               value="{{ emailaddress.email }}"
-                                               type="radio"
-                                               class="focus:ring-primary-200 h-4 w-4 text-primary-200 border-gray-300 rounded"
-                                               {% if radio.checked %}checked{% endif %}>
-                                    </div>
-                                    <div class="ml-3 text-sm">
-                                        <label for="{{ radio.id }}" class="font-medium text-baseDark-300 dark:text-baseLight-100">
-                                            {{ emailaddress.email }}
-                                            {% if emailaddress.verified %}
-                                                <span class="inline-flex items-center ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-success text-baseLight-100">
-                                                    {% trans "verified" %}
-                                                </span>
-                                            {% endif %}
-                                            {% if emailaddress.primary %}
-                                                <span class="inline-flex items-center ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-200 text-baseLight-100">
-                                                    {% trans "primary" %}
-                                                </span>
-                                            {% endif %}
-                                        </label >
-                                    </div>
-                                </div>
-                                {% if emailaddress.primary %}
-                                    <p class="text-danger text-sm mt-1">{% trans "You cannot remove your primary email address." %}</p>
-                                {% else %}
-                                    <button name="action_remove" type="submit" class="btn btn-danger" id="remove-email-button">
-                                        {% trans "Remove" %}
-                                    </button>
-                                {% endif %}
-                            {% endwith %}
-                        {% endfor %}
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 py-16">
+        <div class="text-center">
+            <span class="inline-flex items-center gap-2 px-5 py-2 rounded-full border-2 border-playful-ink bg-playful-sky text-playful-ink text-sm font-semibold uppercase tracking-wide">
+                📬 {% trans "Kelola email" %}
+            </span>
+            <h1 class="mt-6 text-3xl md:text-4xl font-bold text-text-primary">{% trans "Alamat email akunmu" %}</h1>
+            <p class="mt-3 text-base md:text-lg text-text-secondary">
+                {% trans "Gunakan email utama untuk menerima info terbaru, undangan kelas, dan pengingat progres." %}
+            </p>
+        </div>
+
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)] xl:grid-cols-[minmax(0,1.1fr)_minmax(0,0.8fr)]">
+            <div class="space-y-8 max-w-full">
+                <div class="neo-card hover-lift   space-y-6">
+                    <div class="flex flex-col gap-3">
+                        <h2 class="text-2xl font-bold text-text-primary">{% trans "Daftar email" %}</h2>
+                        <p class="text-sm md:text-base text-text-secondary">
+                            {% trans 'Berikut email yang terhubung dengan akunmu. Pilih salah satu untuk mengatur sebagai utama atau kirim ulang verifikasi.' %}
+                        </p>
                     </div>
-                    <div class="mt-6 flex space-x-2">
-                        <button name="action_primary" type="submit" class="btn btn-primary">
-                            {% trans "Make Primary" %}
-                        </button >
-                        <button name="action_send" type="submit" class="btn btn-secondary">
-                            {% trans "Re-send verification" %}
-                        </button >
-                    </div>
-                </form >
-            {% else %}
-                {% include "account/snippets/warn_no_email.html" %}
-            {% endif %}
-            {% if can_add_email %}
-                <div class="mt-8 pt-8 border-t border-baseDark-200 dark:border-baseLight-200">
-                    <h2 class="text-lg font-semibold text-baseDark-300 dark:text-baseLight-100 mb-4">{% trans "Add Email Address" %}</h2>
-                    <form method="post" action="{% url 'account_email' %}" class="flex items-center space-x-3" id="add-email-form">
-                        {% csrf_token %}
-                        {{ form.email }}
-                        <button type="submit" name="action_add" class="btn btn-primary">{% trans "Add Email" %}</button >
-                    </form >
-                    {% if form.errors.email %}
-                        <div class="mt-2 text-sm text-danger">
-                            {% for error in form.errors.email %}
-                                {{ error }}
-                            {% endfor %}
+
+                    {% if emailaddresses %}
+                        <form method="post" action="{% url 'account_email' %}" class="space-y-6" id="email-actions-form">
+                            {{ redirect_field }}
+                            {% csrf_token %}
+
+                            <div class="space-y-4">
+                                {% for radio in emailaddress_radios %}
+                                    {% with emailaddress=radio.emailaddress %}
+                                        <label for="{{ radio.id }}" class="block">
+                                            <input id="{{ radio.id }}"
+                                                   name="email"
+                                                   value="{{ emailaddress.email }}"
+                                                   type="radio"
+                                                   class="peer sr-only"
+                                                   {% if radio.checked %}checked{% endif %}>
+                                            <div class="rounded-xl border-2 border-playful-ink bg-white/70 px-5 py-4 transition-all duration-200 peer-checked:bg-playful-mint/40 peer-checked:border-playful-mint">
+                                                <div class="flex flex-col gap-2 text-sm md:text-base text-text-primary">
+                                                    <div class="flex flex-wrap items-center gap-2 font-semibold">
+                                                        <span>{{ emailaddress.email }}</span>
+                                                        {% if emailaddress.verified %}
+                                                            <span class="inline-flex items-center gap-1 rounded-full border-2 border-playful-ink bg-playful-mint px-2.5 py-0.5 text-xs font-bold text-playful-ink">
+                                                                ✓ {% trans "Terverifikasi" %}
+                                                            </span>
+                                                        {% endif %}
+                                <div class="space-y-4">
+                                    {% for radio in emailaddress_radios %}
+                                        {% with emailaddress=radio.emailaddress %}
+                                            <label for="{{ radio.id }}" class="block">
+                                                <input id="{{ radio.id }}"
+                                                       name="email"
+                                                       value="{{ emailaddress.email }}"
+                                                       type="radio"
+                                                       class="peer sr-only"
+                                                       {% if radio.checked %}checked{% endif %}>
+                                                <div class="rounded-xl border-2 border-playful-ink bg-white/70 px-5 py-4 transition-all duration-200 peer-checked:bg-playful-mint/40 peer-checked:border-playful-mint">
+                                                    <div class="flex flex-col gap-2 text-sm md:text-base text-text-primary">
+                                                        <div class="flex flex-wrap items-center gap-2 font-semibold">
+                                                        {% if emailaddress.primary %}
+                                                            <span class="inline-flex items-center gap-1 rounded-full border-2 border-playful-ink bg-playful-butter px-2.5 py-0.5 text-xs font-bold text-playful-ink">
+                                                                ⭐ {% trans "Utama" %}
+                                                            </span>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% if emailaddress.primary %}
+                                                        <p class="text-xs md:text-sm text-text-secondary">
+                                                            {% trans "Email utama digunakan untuk login dan menerima pemberitahuan penting." %}
+                                                        </p>
+                                                    {% else %}
+                                                        <div class="flex flex-wrap gap-3">
+                                                            <button name="action_remove" type="submit" class="neo-btn-outline hover-lift hover:bounce justify-center gap-2 px-4 py-2 text-sm" id="remove-email-button">
+                                                                {% trans "Hapus" %}
+                                                            </button>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </label>
+                                    {% endwith %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                                <button name="action_primary" type="submit" class="neo-btn hover-bounce justify-center gap-2 px-5 py-3 text-sm md:text-base">
+                                    {% trans "Jadikan utama" %}
+                                </button>
+                                <button name="action_send" type="submit" class="neo-btn-outline hover-lift hover-bounce justify-center gap-2 px-5 py-3 text-sm md:text-base">
+                                    {% trans "Kirim ulang verifikasi" %}
+                                </button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="rounded-xl border-2 border-playful-ink bg-playful-lavender/40 px-5 py-4 text-sm text-text-secondary">
+                            {% include "account/snippets/warn_no_email.html" %}
                         </div>
                     {% endif %}
                 </div>
-            {% endif %}
+
+                {% if can_add_email %}
+                    <div class="neo-card hover-lift   space-y-4">
+                        <h2 class="text-2xl font-bold text-text-primary">{% trans "Tambah email baru" %}</h2>
+                        <p class="text-sm md:text-base text-text-secondary">
+                            {% trans "Masukkan alamat email lain untuk cadangan atau akses tambahan." %}
+                        </p>
+                        <form method="post" action="{% url 'account_email' %}" class="flex flex-col gap-4 md:flex-row md:items-center" id="add-email-form">
+                            {% csrf_token %}
+                            {% render_field form.email class="neo-input w-full md:flex-1" placeholder="name@email.com" %}
+                            <button type="submit" name="action_add" class="neo-btn hover-bounce justify-center gap-2 px-6 py-3 text-sm md:text-base">
+                                {% trans "Tambah email" %}
+                            </button>
+                        </form>
+                        {% if form.errors.email %}
+                            <div class="text-sm font-semibold text-text-error">
+                                {% for error in form.errors.email %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <aside class="space-y-6 max-w-md">
+                <div class="neo-card bg-playful-cream/70 border-playful-ink hover-lift">
+                    <h3 class="text-lg font-semibold text-playful-ink">{% trans "Tips pengaturan email" %}</h3>
+                    <ul class="mt-3 space-y-2 text-sm text-text-secondary">
+                        <li>• {% trans "Gunakan email utama yang aktif setiap hari." %}</li>
+                        <li>• {% trans "Tambah email cadangan untuk akses darurat." %}</li>
+                        <li>• {% trans "Verifikasi setiap email agar notifikasi tidak tertahan." %}</li>
+                    </ul>
+                </div>
+
+                <div class="neo-card bg-playful-mint/40 border-playful-ink hover-lift">
+                    <h3 class="text-lg font-semibold text-playful-ink">{% trans "Kenapa penting?" %}</h3>
+                    <p class="mt-2 text-sm text-text-secondary">
+                        {% trans "Email utama kami gunakan untuk berita kelas baru, pengingat aktivitas, serta keamanan akun." %}
+                    </p>
+                </div>
+            </aside>
         </div>
     </div>
 {% endblock content %}

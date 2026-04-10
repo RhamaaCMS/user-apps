@@ -10,16 +10,28 @@
 {% endblock meta_tags %}
 
 {% block content %}
-    <div class="site-padding site-container">
-        <div class="flex justify-center items-center min-h-screen">
-            <div class="w-full max-w-md neu-container-warning rounded-2xl p-8">
-                <div class="text-center">
-                    <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100">{% trans "Third-Party Login Failure" %}</h1>
-                    <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% trans "An error occurred while attempting to login via your third-party account." %}</p>
+    <div class="site-padding site-container bg-surface-page">
+        <div class="min-h-screen flex items-center justify-center py-16">
+            <div class="relative w-full max-w-lg neo-card bg-playful-coral/40 border-playful-ink px-8 py-10 sm:px-10 overflow-hidden">
+                <div aria-hidden="true" class="absolute -top-14 right-6 h-32 w-32 rounded-full border-2 border-playful-butter bg-playful-rose/30 blur-3xl"></div>
+                <div aria-hidden="true" class="absolute -bottom-16 -left-12 h-48 w-48 rounded-full border-2 border-playful-mint bg-playful-cream/40 blur-3xl"></div>
+
+                <div class="relative text-center space-y-4">
+                    <span class="inline-flex items-center justify-center gap-2 bg-playful-butter text-playful-ink border-2 border-playful-ink rounded-full px-4 py-1 text-xs font-semibold uppercase tracking-wide">
+                        {% trans "Oops!" %}
+                    </span>
+                    <h1 class="text-3xl font-bold text-text-primary">{% trans "Third-Party Login Failure" %}</h1>
+                    <p class="text-sm text-text-secondary">
+                        {% trans "An error occurred while attempting to login via your third-party account." %}
+                    </p>
                 </div>
-                <div class="mt-6">
-                    <a href="{% url 'account_login' %}" class="neu-btn-primary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-lg font-semibold text-baseDark-100 dark:text-baseLight-100 w-full transition-all duration-300">
+
+                <div class="relative mt-8 space-y-4">
+                    <a href="{% url 'account_login' %}" class="neo-btn hover-bounce w-full justify-center gap-2">
                         {% trans "Return to Login" %}
+                    </a>
+                    <a href="{% url 'account_reset_password' %}" class="neo-btn-outline w-full justify-center gap-2">
+                        {% trans "Reset Password" %}
                     </a>
                 </div>
             </div>

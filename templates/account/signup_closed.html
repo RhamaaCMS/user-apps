@@ -9,43 +9,60 @@
 {% endblock meta_tags %}
 
 {% block content %}
-<div class="site-padding site-container">
-    <div class="flex justify-center items-center min-h-screen">
-        <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm text-center">
-            <!-- Decorative Elements -->
-            <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-danger/10 blur-3xl -z-10"></div>
-            <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-warning/10 blur-3xl -z-10"></div>
-            
-            <div class="mx-auto w-20 h-20 flex items-center justify-center rounded-full neu-container-danger mb-6">
-                <svg class="w-10 h-10 text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-            </div>
-            
-            <h1 class="text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-4">{% trans "Pendaftaran Ditutup" %}</h1>
-            <p class="text-baseDark-200/70 dark:text-baseLight-200/70 mb-8">{% trans "Mohon maaf, pendaftaran akun baru saat ini sedang ditutup." %}</p>
-            
-            <div class="flex justify-center">
-                <a href="{% url 'account_login' %}" class="neu-btn-primary py-3 px-6 rounded-xl inline-flex items-center transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                        <polyline points="10 17 15 12 10 7"></polyline>
-                        <line x1="15" y1="12" x2="3" y2="12"></line>
+<div class="site-padding site-container py-16">
+    <div class="flex items-center justify-center min-h-[70vh]">
+        <div class="relative w-full max-w-2xl neo-card hover-lift   overflow-hidden p-10 md:p-12 text-center">
+            <div aria-hidden="true" class="absolute -top-16 -right-24 h-48 w-48 rounded-full bg-playful-coral/35 blur-3xl"></div>
+            <div aria-hidden="true" class="absolute -bottom-20 -left-24 h-56 w-56 rounded-full bg-playful-butter/40 blur-3xl"></div>
+
+            <div class="relative space-y-8">
+                <span class="inline-flex items-center justify-center gap-3 rounded-full border-3 border-playful-ink bg-playful-rose/70 px-5 py-2 text-sm font-semibold text-playful-ink">
+                    😿 {% trans "Maaf, pendaftaran belum tersedia" %}
+                </span>
+
+                <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-coral/40 text-playful-ink">
+                    <svg class="h-12 w-12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
-                    {% trans "Masuk" %}
-                </a>
-            </div>
-            
-            <div class="mt-6">
-                <a href="/" class="inline-flex items-center text-sm font-medium text-primary-200 hover:text-primary-100 transition-colors">
-                    <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                    </svg>
-                    Kembali ke Beranda
-                </a>
+                </div>
+
+                <div class="space-y-4">
+                    <h1 class="text-3xl font-bold text-text-primary">{% trans "Pendaftaran Ditutup" %}</h1>
+                    <p class="mx-auto max-w-xl text-sm md:text-base text-text-secondary">
+                        {% trans "Mohon maaf, pendaftaran akun baru sedang tidak tersedia. Kami sedang menyiapkan kejutan berikutnya untukmu!" %}
+                    </p>
+                </div>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-xl border-3 border-playful-ink bg-playful-cream/70 p-4 text-left">
+                        <p class="text-sm font-semibold text-text-primary">{% trans "Tetap terhubung" %}</p>
+                        <p class="mt-1 text-xs text-text-secondary">{% trans "Ikuti kami di media sosial untuk kabar terbaru." %}</p>
+                    </div>
+                    <div class="rounded-xl border-3 border-playful-ink bg-playful-sky/40 p-4 text-left">
+                        <p class="text-sm font-semibold text-text-primary">{% trans "Masuk untuk lanjut" %}</p>
+                        <p class="mt-1 text-xs text-text-secondary">{% trans "Pengguna terdaftar masih dapat menikmati semua fitur." %}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
+                    <a href="{% url 'account_login' %}" class="neo-btn hover-bounce justify-center gap-2">
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10 17 15 12 10 7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>
+                        {% trans "Masuk" %}
+                    </a>
+                    <a href="/" class="neo-btn-outline hover-bounce justify-center gap-2">
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        {% trans "Kembali ke Beranda" %}
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -51,6 +51,11 @@
       "include": "apps.{app_name}.urls",
       "namespace": "users",
       "name": "users_app"
+    },
+    {
+      "path": "accounts/",
+      "include": "allauth.urls",
+      "name": "allauth_root"
     }
   ],
   "dependencies": {

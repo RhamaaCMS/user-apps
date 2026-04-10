@@ -11,47 +11,67 @@
 {% endblock meta_tags %}
 
 {% block content %}
-<div class="site-padding site-container">
-    <div class="flex justify-center items-center min-h-screen">
-        <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
-            <!-- Decorative Elements -->
-            <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-warning/10 blur-3xl -z-10"></div>
-            <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-danger/10 blur-3xl -z-10"></div>
-            
-            <div class="text-center">
-                <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-warning mb-4">
-                    <svg class="w-8 h-8 text-warning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
+<div class="site-padding site-container py-16">
+    <div class="flex flex-col items-center justify-center min-h-[60vh] space-y-10">
+        <div class="text-center max-w-2xl">
+            <span class="inline-flex items-center gap-2 px-5 py-2 rounded-full border-2 border-playful-ink bg-playful-lavender text-playful-ink text-sm font-semibold uppercase tracking-wide">
+                ⚠️ {% trans "Perlu perhatian" %}
+            </span>
+            <h1 class="mt-6 text-3xl md:text-4xl font-bold text-text-primary">{% trans "Akun belum aktif" %}</h1>
+            <p class="mt-3 text-base md:text-lg text-text-secondary">
+                {% trans "Kami menemukan bahwa akunmu belum aktif sepenuhnya. Yuk cek langkah berikut untuk menyelesaikannya." %}
+            </p>
+        </div>
+
+        <div class="w-full max-w-2xl">
+            <div class="relative neo-card hover-lift   overflow-hidden">
+                <div class="absolute -top-14 -right-16 h-40 w-40 rounded-full bg-playful-peach/50 blur-3xl"></div>
+                <div class="absolute -bottom-16 -left-16 h-44 w-44 rounded-full bg-playful-coral/40 blur-3xl"></div>
+
+                <div class="relative space-y-8 text-text-primary">
+                    <div class="flex flex-col items-center text-center space-y-4">
+                        <div class="flex h-20 w-20 items-center justify-center rounded-full border-2 border-playful-ink bg-playful-butter text-playful-ink">
+                            <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <p class="text-sm md:text-base text-text-secondary max-w-xl">
+                            {% trans "Akun Anda saat ini tidak aktif. Hal ini bisa terjadi karena akun dinonaktifkan oleh administrator atau proses aktivasi belum selesai." %}
+                        </p>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-xl border-2 border-playful-ink bg-playful-cream/70 p-4">
+                            <h2 class="text-lg font-semibold text-playful-ink">{% trans "Sudah aktivasi email?" %}</h2>
+                            <p class="mt-2 text-sm text-text-secondary">
+                                {% trans "Periksa kotak masuk dan folder spam untuk menemukan tautan verifikasi dari kami." %}
+                            </p>
+                        </div>
+                        <div class="rounded-xl border-2 border-playful-ink bg-playful-mint/50 p-4">
+                            <h2 class="text-lg font-semibold text-playful-ink">{% trans "Butuh bantuan admin?" %}</h2>
+                            <p class="mt-2 text-sm text-text-secondary">
+                                {% trans "Hubungi tim dukungan Runutin untuk memastikan status akunmu." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border-2 border-playful-ink bg-playful-sky/30 p-5 text-center">
+                        <p class="text-sm md:text-base text-text-secondary">
+                            {% trans "Jika kamu yakin ini adalah kesalahan, kirimkan detail akunmu kepada kami agar bisa dibantu secepatnya." %}
+                        </p>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <a href="/" class="neo-btn hover-bounce justify-center gap-2 px-6 py-3 text-base">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                            {% trans "Kembali ke beranda" %}
+                        </a>
+                    </div>
                 </div>
-                <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100 mb-1">{% trans "Akun Tidak Aktif" %}</h1>
-                <div class="inline-flex items-center justify-center gap-2 h-1 w-12 bg-gradient-to-r from-warning to-danger rounded-full mb-4"></div>
-            </div>
-            
-            <div class="mt-6 neu-container-secondary rounded-xl p-6">
-                <p class="text-sm text-baseDark-100 dark:text-baseLight-100 text-center">
-                    {% trans "Akun Anda saat ini tidak aktif. Hal ini mungkin karena akun Anda telah dinonaktifkan oleh administrator, atau akun Anda belum diaktifkan." %}
-                </p>
-                
-                <div class="mt-6 flex items-center p-4 rounded-xl neu-container-warning bg-warning/5">
-                    <svg class="w-5 h-5 text-warning mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <p class="text-xs text-baseDark-200/70 dark:text-baseLight-200/70">
-                        {% trans "Jika Anda yakin ini adalah kesalahan, silakan hubungi tim dukungan kami untuk bantuan lebih lanjut." %}
-                    </p>
-                </div>
-            </div>
-            
-            <div class="mt-8 flex justify-center">
-                <a href="/" class="neu-btn-primary py-3 px-6 rounded-lg inline-flex items-center transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                    </svg>
-                    {% trans "Kembali ke Beranda" %}
-                </a>
             </div>
         </div>
     </div>

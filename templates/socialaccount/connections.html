@@ -10,44 +10,67 @@
 {% endblock meta_tags %}
 
 {% block content %}
-    <div class="container mx-auto py-8">
-        <div class="neu-container-primary rounded-2xl p-8">
-            <h1 class="text-2xl font-bold mb-4 text-baseDark-100 dark:text-baseLight-100">{% trans "Account Connections" %}</h1>
+    <div class="site-padding site-container bg-surface-page">
+        <div class="max-w-5xl mx-auto py-12 space-y-10">
+            <section class="relative neo-card bg-playful-cream/70 border-playful-ink px-8 py-10 overflow-hidden">
+                <div aria-hidden="true" class="absolute -top-16 right-10 h-40 w-40 rounded-full border-2 border-playful-mint bg-playful-sky/40 blur-3xl"></div>
+                <div aria-hidden="true" class="absolute -bottom-20 left-6 h-48 w-48 rounded-full border-2 border-playful-lavender bg-playful-peach/40 blur-3xl"></div>
+
+                <div class="relative space-y-3">
+                    <span class="inline-flex items-center gap-2 bg-playful-butter text-playful-ink border-2 border-playful-ink rounded-full px-4 py-1 text-xs font-semibold uppercase tracking-wide">
+                        {% trans "Keamanan Akun" %}
+                    </span>
+                    <h1 class="text-3xl font-bold text-text-primary">{% trans "Account Connections" %}</h1>
+                    <p class="text-sm text-text-secondary max-w-2xl">
+                        {% blocktrans %}You can sign in to your account using any of the following third-party accounts.{% endblocktrans %}
+                    </p>
+                </div>
+            </section>
+
             {% if form.accounts %}
-                <p class="mb-4 text-baseDark-200 dark:text-baseLight-200">{% blocktrans %}You can sign in to your account using any of the following third-party accounts:{% endblocktrans %}</p>
-                <form method="post" action="{% url 'socialaccount_connections' %}" id="remove-connection-form">
-                    {% csrf_token %}
-                    <div class="space-y-3 neu-container-secondary p-4 rounded-xl mb-4">
-                        {% for acc in form.fields.account.choices %}
-                            {% with account=acc.0.instance.get_provider_account %}
-                                <div class="flex items-center">
-                                    <input type="radio"
-                                           id="id_account_{{ account.account.pk }}"
-                                           name="account"
-                                           value="{{ account.account.pk }}"
-                                           class="shrink-0 mt-0.5 h-5 w-5 border-baseLight-300 dark:border-baseDark-300 rounded text-primary-100 focus:ring-primary-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-baseDark-200 dark:checked:bg-primary-100 dark:checked:border-primary-100 dark:focus:ring-offset-baseDark-200"
-                                           {% if radio.checked %}checked{% endif %} />
-                                    <label for="id_account_{{ account.account.pk }}" class="ml-2 block text-sm text-baseDark-100 dark:text-baseLight-100">
-                                        {{ account.get_brand.name }}
+                <section class="neo-card bg-surface-card border-playful-ink px-6 py-8 space-y-6">
+                    <form method="post" action="{% url 'socialaccount_connections' %}" id="remove-connection-form" class="space-y-6">
+                        {% csrf_token %}
+                        <div class="grid gap-3">
+                            {% for acc in form.fields.account.choices %}
+                                {% with radio=acc.0 account=acc.0.instance.get_provider_account %}
+                                    <label for="id_account_{{ account.account.pk }}" class="flex items-center justify-between gap-4 neo-card bg-playful-cream/40 border-playful-ink hover-lift transition-all cursor-pointer">
+                                        <div class="flex items-center gap-3">
+                                            <input type="radio"
+                                                   id="id_account_{{ account.account.pk }}"
+                                                   name="account"
+                                                   value="{{ account.account.pk }}"
+                                                   class="h-5 w-5 border-2 border-playful-ink text-playful-mint focus:ring-playful-mint focus:ring-offset-2"
+                                                   {% if radio.checked %}checked{% endif %} />
+                                            <span class="text-base font-semibold text-text-primary">{{ account.get_brand.name }}</span>
+                                        </div>
+                                        <span class="text-xs font-medium text-text-secondary uppercase tracking-tight">{% trans "Terhubung" %}</span>
                                     </label>
-                                </div>
-                            {% endwith %}
-                        {% endfor %}
-                    </div>
-                    <button type="submit" class="neu-btn-danger py-2 px-4 inline-flex justify-center items-center gap-2 rounded-lg font-medium text-baseDark-100 dark:text-baseLight-100 transition-all duration-300"
-                            id="remove-connection-button">
-                        {% trans "Remove" %}
-                    </button>
-                </form>
+                                {% endwith %}
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="neo-btn hover-bounce bg-playful-coral text-playful-ink border-playful-ink hover:border-playful-mint w-full justify-center gap-2"
+                                id="remove-connection-button">
+                            {% trans "Remove" %}
+                        </button>
+                    </form>
+                </section>
             {% else %}
-                <p class="mb-4 text-baseDark-200 dark:text-baseLight-200 neu-container-secondary p-4 rounded-xl">{% trans "You currently have no third-party accounts connected to this account." %}</p>
+                <section class="neo-card bg-playful-mint/30 border-playful-mint px-6 py-6 text-text-primary">
+                    {% trans "You currently have no third-party accounts connected to this account." %}
+                </section>
             {% endif %}
 
-            <h2 class="text-lg font-semibold mt-8 mb-4 text-baseDark-100 dark:text-baseLight-100">{% trans "Add a Third-Party Account" %}</h2>
-            <div class="neu-container-secondary p-4 rounded-xl">
-                {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
-                {% include "socialaccount/snippets/login_extra.html" %}
-            </div>
+            <section class="neo-card bg-surface-card border-playful-ink px-6 py-8 space-y-6">
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-bold text-text-primary">{% trans "Add a Third-Party Account" %}</h2>
+                    <p class="text-sm text-text-secondary">{% trans "Pilih provider favoritmu untuk pengalaman login yang lebih cepat dan aman." %}</p>
+                </div>
+                <div class="space-y-4">
+                    {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+                    {% include "socialaccount/snippets/login_extra.html" %}
+                </div>
+            </section>
         </div>
     </div>
 {% endblock content %}

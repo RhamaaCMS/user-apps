@@ -6,22 +6,42 @@
     {% translate "Recovery Codes" as heading %}
     {% blocktranslate asvar subheading count unused_count=unused_codes|length %}There is {{ unused_count }} out of {{ total_count }} recovery codes available.{% plural %}There are {{ unused_count }} out of {{ total_count }} recovery codes available.{% endblocktranslate %}
     {% #container heading=heading subheading=subheading %}
-    <div class="my-3">
-        <label class="label" for="codes">
-            <span class="label-text">{% translate "Unused codes" %}</span>
-        </label>
-        <textarea id="codes" class="w-full m-3 mx-auto textarea" rows="{{unused_codes|length}}" disabled readonly>
-        {% for code in unused_codes %}{{ code }}
-        {% endfor %}
-    </textarea>
-    </div>
-    <div class="flex flex-col mx-auto sm:w-8/12 xl:w-7/12">
-        {% if unused_codes %}
-            <a href="{% url "mfa_download_recovery_codes" %}"
-               class="md:w-full btn btn-neutral">{% trans "Download codes" %}</a>
-        {% endif %}
-        <a href="{% url "mfa_generate_recovery_codes" %}"
-           class="mt-4 md:w-full btn btn-neutral">{% trans "Generate new codes" %}</a>
+    <div class="space-y-6">
+        <section class="neo-card border-playful-ink bg-playful-cream/70 p-6    -up">
+            <div class="flex items-start gap-3">
+                <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-butter text-playful-ink">💾</span>
+                <div class="space-y-1">
+                    <h2 class="text-sm font-semibold uppercase tracking-[0.2em] text-playful-ink">{% translate "Unused codes" %}</h2>
+                    <p class="text-xs text-text-secondary">{% translate "Simpan kode ini di tempat aman. Setiap kode hanya bisa digunakan sekali." %}</p>
+                </div>
+            </div>
+            <textarea id="codes"
+                      class="mt-4 h-48 w-full rounded-xl border-3 border-playful-ink bg-surface-card p-4 text-sm font-mono leading-relaxed text-text-primary"
+                      rows="{{ unused_codes|length|default:8 }}" disabled readonly>{% for code in unused_codes %}{{ code }}{% if not forloop.last %}
+{% endif %}{% endfor %}</textarea>
+        </section>
+
+        <div class="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            {% if unused_codes %}
+                <a href="{% url "mfa_download_recovery_codes" %}"
+                   class="neo-btn-outline hover-bounce justify-center gap-2">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    {% trans "Unduh kode" %}
+                </a>
+            {% endif %}
+            <a href="{% url "mfa_generate_recovery_codes" %}"
+               class="neo-btn hover-bounce justify-center gap-2">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14"></path>
+                    <path d="M5 12h14"></path>
+                </svg>
+                {% trans "Buat kode baru" %}
+            </a>
+        </div>
     </div>
     {% /container %}
 {% endblock content %}

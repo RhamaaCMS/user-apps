@@ -1,4 +1,4 @@
-{% extends "base_page.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 {% load allauth_ui %}
 {% load allauth %}
@@ -17,59 +17,70 @@
 {% endblock meta_tags %}
 
 {% block content %}
-    <div class="site-padding site-container">
-        <div class="flex justify-center items-center min-h-screen">
-            <div class="w-full max-w-md neu-container-primary rounded-2xl p-8 shadow-lg backdrop-blur-sm">
-                <!-- Decorative Elements -->
-                <div aria-hidden="true" class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary-100/10 blur-3xl -z-10"></div>
-                <div aria-hidden="true" class="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-accent-100/10 blur-3xl -z-10"></div>
-                
-                <div class="text-center">
-                    {% if process == "connect" %}
-                        <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-primary mb-4">
-                            <svg class="w-8 h-8 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                            </svg>
-                        </div>
-                        <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100">{% blocktrans with provider.name as provider %}Hubungkan {{ provider }}{% endblocktrans %}</h1>
-                        <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% blocktrans with provider.name as provider %}Anda akan menghubungkan akun baru dari {{ provider }}.{% endblocktrans %}</p>
-                    {% else %}
-                        <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-full neu-container-primary mb-4">
-                            <svg class="w-8 h-8 text-primary-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-                                <line x1="9" y1="9" x2="9.01" y2="9"></line>
-                                <line x1="15" y1="9" x2="15.01" y2="9"></line>
-                            </svg>
-                        </div>
-                        <h1 class="block text-2xl font-bold text-baseDark-100 dark:text-baseLight-100">{% blocktrans with provider.name as provider %}Masuk Via {{ provider }}{% endblocktrans %}</h1>
-                        <p class="mt-2 text-sm text-baseDark-200/70 dark:text-baseLight-200/70">{% blocktrans with provider.name as provider %}Anda akan masuk menggunakan akun {{ provider }}.{% endblocktrans %}</p>
-                    {% endif %}
-                </div>
+    <div class="relative min-h-screen w-full bg-surface-page overflow-hidden">
+        {# Background decorative elements #}
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <div class="absolute top-20 -left-12 w-32 h-32 bg-playful-butter border border-playful-ink rounded-3xl rotate-12 opacity-20"></div>
+            <div class="absolute bottom-32 -right-8 w-28 h-28 bg-playful-sky border border-playful-ink rounded-2xl -rotate-6 opacity-20"></div>
+        </div>
 
-                <form class="mt-8 space-y-4" method="post">
-                    {% csrf_token %}
-                    {{ redirect_field|default_if_none:"" }}
-                    <div>
-                        <button type="submit" class="neu-btn-primary py-3 px-4 inline-flex justify-center items-center gap-2 rounded-xl font-semibold text-baseDark-100 dark:text-baseLight-100 w-full transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
-                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                                <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg>
-                            {% trans "Lanjutkan" %}
-                        </button>
+        <div class="relative min-h-screen flex items-center justify-center py-16 px-4">
+            {# Main card with offset shadow #}
+            <div class="relative w-full max-w-xl mx-auto" style="min-width: 420px;">
+                <div class="absolute inset-0 bg-playful-sky border border-playful-ink rounded-2xl translate-x-3 translate-y-3"></div>
+                <div class="relative w-full border border-playful-ink bg-surface-card px-8 py-12 sm:px-12 overflow-hidden shadow-sm rounded-2xl" style="min-width: 420px;">
+                    {# Corner badge #}
+                    <div class="absolute -top-3 -right-3 w-12 h-12 bg-playful-mint border border-playful-ink rounded-full flex items-center justify-center shadow-sm z-10">
+                        <span class="text-xl">🔗</span>
                     </div>
-                    <div class="text-center mt-4">
-                        <a href="{% url 'account_login' %}" class="inline-flex items-center text-sm font-medium text-primary-200 hover:text-primary-100 transition-colors">
-                            <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="19" y1="12" x2="5" y2="12"></line>
-                                <polyline points="12 19 5 12 12 5"></polyline>
-                            </svg>
-                            Kembali ke halaman login
-                        </a>
+                    <div aria-hidden="true" class="pointer-events-none absolute -top-20 right-6 h-40 w-40 rounded-full bg-playful-sky/35 blur-3xl"></div>
+                    <div aria-hidden="true" class="pointer-events-none absolute -bottom-24 -left-10 h-52 w-52 rounded-full bg-playful-mint/35 blur-3xl"></div>
+
+                    <div class="relative text-center space-y-4" data-stagger>
+                        {% if process == "connect" %}
+                            {# Connect badge with offset shadow #}
+                            <div class="relative inline-block">
+                                <div class="absolute inset-0 bg-playful-mint border border-playful-ink rounded-full translate-x-1 translate-y-1"></div>
+                                <span class="relative emoji-chip inline-flex items-center justify-center gap-2 rounded-full border border-playful-sky bg-playful-sky/80 px-5 py-2 text-sm font-semibold text-playful-ink hover-bounce shadow-sm">
+                                    <span class="emoji-animated" aria-hidden="true">🔗</span>
+                                    {% blocktrans with provider.name as provider %}Hubungkan {{ provider }}{% endblocktrans %}
+                                </span>
+                            </div>
+                            <h1 class="text-3xl font-black text-text-primary">{% blocktrans with provider.name as provider %}Hubungkan {{ provider }}{% endblocktrans %}</h1>
+                            <p class="text-base leading-relaxed text-text-secondary max-w-prose mx-auto text-center text-balance">{% blocktrans with provider.name as provider %}Anda akan menghubungkan akun baru dari {{ provider }}.{% endblocktrans %}</p>
+                        {% else %}
+                            {# Login badge with offset shadow #}
+                            <div class="relative inline-block">
+                                <div class="absolute inset-0 bg-playful-coral border border-playful-ink rounded-full translate-x-1 translate-y-1"></div>
+                                <span class="relative emoji-chip inline-flex items-center justify-center gap-2 rounded-full border border-playful-butter bg-playful-butter px-5 py-2 text-sm font-semibold text-playful-ink hover-bounce shadow-sm">
+                                    <span class="emoji-animated" aria-hidden="true">😊</span>
+                                    {% blocktrans with provider.name as provider %}Masuk Via {{ provider }}{% endblocktrans %}
+                                </span>
+                            </div>
+                            <h1 class="text-3xl font-black text-text-primary">{% blocktrans with provider.name as provider %}Masuk Via {{ provider }}{% endblocktrans %}</h1>
+                            <p class="text-base leading-relaxed text-text-secondary max-w-prose mx-auto text-center text-balance">{% blocktrans with provider.name as provider %} menggunakan akun {{ provider }}.{% endblocktrans %}</p>
+                        {% endif %}
                     </div>
-                </form>
+
+                    <form class="relative mt-10 space-y-6" method="post">
+                        {% csrf_token %}
+                        {{ redirect_field|default_if_none:"" }}
+                        {# Submit button with offset shadow #}
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-playful-coral border border-playful-ink rounded-xl translate-x-1 translate-y-1"></div>
+                            <button type="submit" class="relative neo-btn hover-bounce w-full py-3 gap-2 border border-playful-ink shadow-sm">
+                                <span class="emoji-animated text-xl" aria-hidden="true">🚀</span>
+                                {% trans "Lanjutkan" %}
+                            </button>
+                        </div>
+                        <div class="text-center">
+                            <a href="{% url 'account_login' %}" class="inline-flex items-center justify-center gap-2 text-sm font-semibold text-text-link hover:text-playful-mint transition-colors">
+                                <span class="emoji-animated" aria-hidden="true">⬅️</span>
+                                {% trans "Kembali ke halaman login" %}
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -2,27 +2,77 @@
 {% load allauth %}
 {% load allauth_ui %}
 {% load i18n %}
+{% load widget_tweaks %}
 {% block content %}
     {% trans "Two-Factor Authentication" as heading %}
     {% blocktranslate asvar subheading %}Your account is protected by two-factor authentication. Please enter an authenticator code:{% endblocktranslate %}
     {% url 'mfa_authenticate' as action_url %}
     {% #container heading=heading subheading=subheading %}
-    {% translate "Activate" as button_text %}
-    {% trans "Sign In" as button_text %}
-    {% #form form=form url=action_url button_text=button_text %}
-    {% csrf_token %}
-    {% /form %}
-    {% if "webauthn" in MFA_SUPPORTED_TYPES %}
-        <div class="divider"></div>
-        <h2 class="my-3 text-lg">{% translate "Alternative options" %}</h2>
-        {% #form form=webauthn_form url=action_url use_default_button="false" %}
-        <button type="submit" class="btn btn-neutral">
-            {% trans "Use a security key" %}
-        </button>
-        <a href="{% url "account_login" %}" class="btn btn-accent">{% trans "Cancel" %}</a>
-        {% csrf_token %}
-        {% /form %}
-    {% endif %}
+    <div class="space-y-6">
+        <form method="post" action="{{ action_url }}" class="space-y-5">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+
+            {% if form.non_field_errors %}
+                <div class="rounded-xl border-3 border-playful-coral bg-playful-coral/30 p-4 text-sm text-text-primary shake-error">
+                    <ul class="space-y-1">
+                        {% for error in form.non_field_errors %}
+                            <li>• {{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% for field in form.visible_fields %}
+                <div class="space-y-2">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-text-primary">
+                        {{ field.label }}
+                        {% if field.field.required %}<span class="text-text-error">*</span>{% endif %}
+                    </label>
+                    {% render_field field class="neo-input py-3 px-4 placeholder:text-text-placeholder" placeholder=field.label %}
+                    {% if field.help_text %}
+                        <p class="text-xs text-text-secondary">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="text-xs font-semibold text-text-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="neo-btn hover-bounce w-full justify-center gap-2">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <path d="M20 8v6"></path>
+                    <path d="M23 11h-6"></path>
+                </svg>
+                {% trans "Masuk" %}
+            </button>
+        </form>
+
+        {% if "webauthn" in MFA_SUPPORTED_TYPES %}
+            <div class="neo-card border-playful-ink bg-playful-sky/40 p-5 space-y-4    -up">
+                <div class="flex items-start gap-3">
+                    <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-butter text-playful-ink">🔐</span>
+                    <div class="space-y-1">
+                        <h2 class="text-sm font-semibold text-text-primary uppercase tracking-[0.2em]">{% translate "Opsi lain" %}</h2>
+                        <p class="text-xs text-text-secondary">{% translate "Gunakan kunci keamanan fisik yang sudah kamu daftarkan." %}</p>
+                    </div>
+                </div>
+                <form method="post" action="{{ action_url }}" class="flex flex-wrap gap-3" novalidate>
+                    {% csrf_token %}
+                    {% for hidden in webauthn_form.hidden_fields %}{{ hidden }}{% endfor %}
+                    {% for field in webauthn_form.visible_fields %}{{ field.as_hidden }}{% endfor %}
+                    <button type="submit" class="neo-btn hover-bounce justify-center gap-2">
+                        {% trans "Gunakan kunci keamanan" %}
+                    </button>
+                    <a href="{% url "account_login" %}" class="neo-btn-outline hover-bounce justify-center gap-2">
+                        {% trans "Batal" %}
+                    </a>
+                </form>
+            </div>
+        {% endif %}
+    </div>
     {% /container %}
     {{ js_data|json_script:"js_data" }}
     {% include "mfa/webauthn/snippets/scripts.html" %}

@@ -4,19 +4,19 @@
 {% var render_fields=render_fields|default:"true" %}
 {% var use_default_button=use_default_button|default:"true" %}
 
-<form method="post" action="{{ url }}" class="rounded-2xl p-8" style="background-color: var(--g-color-surface-field); border: 1px solid var(--g-color-border-furniture);">
+<form method="post" action="{{ url }}" class="neo-card px-8 py-10 space-y-8    -up">
     {% csrf_token %}
     
     <!-- Non-field Errors -->
     {% for error in form.non_field_errors %}
-        <div class="g-alert g-alert-error mb-4">
+        <div class="neo-card border-playful-coral bg-playful-coral/20 px-4 py-3 text-sm font-semibold text-primary shake-error">
             {{ error }}
         </div>
     {% endfor %}
     
     <!-- Form Fields -->
     {% if render_fields == "true" %}
-        <div class="space-y-6">
+        <div class="space-y-6" data-stagger>
             {% for field in form.visible_fields %}
                 {% if field.name != "remember" %}
                     {% #form_field field=field %}
@@ -30,8 +30,8 @@
     
     <!-- Submit Button -->
     {% if use_default_button == "true" %}
-        <div class="mt-8">
-            <button type="submit" class="py-3 px-6 rounded-lg w-full sm:w-auto transition-all duration-300 hover:shadow-lg" style="background-color: var(--g-color-surface-button-default); color: var(--g-color-text-button); border: 1px solid var(--g-color-border-button-outline-default);">
+        <div class="pt-2">
+            <button type="submit" class="neo-btn hover-bounce w-full sm:w-auto justify-center gap-2 px-6 py-3">
                 {{ button_text }}
             </button>
         </div>

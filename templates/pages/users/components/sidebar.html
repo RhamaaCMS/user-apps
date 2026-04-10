@@ -2,121 +2,159 @@
 
 <!-- Sidebar -->
 <div id="hs-application-sidebar"
-    class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform fixed inset-y-4 start-4 z-[60] w-[260px] lg:w-16 lg:hover:w-[260px] h-[calc(100%-2rem)] lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 before:absolute before:inset-0 before:rounded-[26px] rounded-2xl shadow-lg group"
-    style="background-color: var(--g-color-surface-field); border: 1px solid var(--g-color-border-furniture);"
-    role="dialog" tabindex="-1" aria-label="Sidebar"></div>
-
-<div class="relative flex flex-col h-full overflow-hidden">
+  class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full fixed inset-y-4 start-4 z-[60] w-[280px] lg:w-20 lg:hover:w-[280px] h-[calc(100%-2rem)] lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 transition-all duration-300 transform rounded-3xl border-2 border-playful-ink bg-surface-card shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] slide-in-left group"
+  role="dialog" tabindex="-1" aria-label="Sidebar">
+  <div class="relative flex flex-col h-full overflow-hidden">
     <!-- Logo Section -->
-    <div class="px-6 lg:px-3 lg:group-hover:px-6 pt-4">
-        <!-- Logo -->
-        <a class="flex-none rounded-xl inline-block font-semibold focus:outline-none focus:opacity-80" href="/"
-            aria-label="Home">
-            <!-- Logo besar untuk mobile -->
-            <div class="w-[116px] lg:hidden">
-                <h2 class="text-xl font-bold" style="color: var(--g-color-primary);">RHAMAA</h2>
-            </div>
-            <!-- Logo kecil dan besar untuk desktop -->
-            <div class="hidden lg:block w-8 h-8 lg:group-hover:hidden rounded-full flex items-center justify-center"
-                style="background-color: var(--g-color-primary);"></div>
-            <span class="text-white font-bold text-sm">R</span>
+    <div class="px-6 lg:px-4 lg:group-hover:px-6 pt-6 pb-4 flex items-center justify-center lg:justify-start">
+      <!-- Logo -->
+      <a class="flex-none rounded-xl inline-block font-semibold focus:outline-none focus:opacity-80 transition-transform hover:scale-105"
+        href="/" aria-label="Preline">
+        <!-- Logo besar untuk mobile -->
+        <div class="w-[140px] lg:hidden">
+          <img class="" src="{% static 'images/runutin/LightRunutinLogo.svg' %}" alt="Logo" />
+        </div>
+        <!-- Logo kecil dan besar untuk desktop -->
+        <img src="{% static 'images/runutin/small-icon-color.svg' %}" alt="Logo"
+          class="hidden lg:block w-10 h-10 lg:group-hover:hidden animate-bounce" />
+        <div class="hidden lg:group-hover:block h-10">
+          <img class="h-10" src="{% static 'images/runutin/LightRunutinLogo.svg' %}" alt="Logo" />
+        </div>
+      </a>
     </div>
-    <div class="hidden lg:group-hover:block h-8">
-        <h2 class="text-xl font-bold" style="color: var(--g-color-primary);">RHAMAA</h2>
-    </div>
-    </a>
-</div>
 
-<!-- Content Section -->
-<div class="flex-1 overflow-y-auto py-4">
-    <nav class="hs-accordion-group px-3 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
-        <!-- Account Section -->
-        <div class="mb-4">
-            <h3 class="text-xs font-semibold uppercase tracking-wide px-2 mb-2 lg:hidden lg:group-hover:block"
-                style="color: var(--g-color-text-meta);">
-                Akun
-            </h3>
-            <ul class="flex flex-col space-y-1">
-                <li>
-                    <a class="flex items-center p-2 text-base font-medium rounded-lg transition-all duration-200 hover:shadow-md"
-                        style="color: var(--g-color-text-context); background-color: var(--g-color-surface-field-inactive); border: 1px solid var(--g-color-border-field-inactive);"
-                        href="{% url 'users:profile' %}">
-                        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="ms-3 lg:hidden lg:group-hover:block">Profil</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="flex items-center p-2 text-base font-medium rounded-lg transition-all duration-200 hover:shadow-md"
-                        style="color: var(--g-color-text-context); background-color: var(--g-color-surface-field-inactive); border: 1px solid var(--g-color-border-field-inactive);"
-                        href="/accounts/password/set">
-                        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="ms-3 lg:hidden lg:group-hover:block">Password</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="flex items-center p-2 text-base font-medium rounded-lg transition-all duration-200 hover:shadow-md"
-                        style="color: var(--g-color-text-context); background-color: var(--g-color-surface-field-inactive); border: 1px solid var(--g-color-border-field-inactive);"
-                        href="/accounts/email">
-                        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M2.038 5.61A2.01 2.01 0 0 0 2 6v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-.12-.01-.238-.03-.352l-.866.65-7.89 6.032a2 2 0 0 1-2.429 0L2.884 6.288l-.846-.677Z" />
-                            <path
-                                d="M20.677 4.117A1.996 1.996 0 0 0 20 4H4c-.225 0-.44.037-.642.105l.758.607L12 10.742 19.9 4.7l.777-.583Z" />
-                        </svg>
-                        <span class="ms-3 lg:hidden lg:group-hover:block">Email</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="flex items-center p-2 text-base font-medium rounded-lg transition-all duration-200 hover:shadow-md"
-                        style="color: var(--g-color-text-context); background-color: var(--g-color-surface-field-inactive); border: 1px solid var(--g-color-border-field-inactive);"
-                        href="/accounts/3rdparty">
-                        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M7 2a2 2 0 0 0-2 2v1a1 1 0 0 0 0 2v1a1 1 0 0 0 0 2v1a1 1 0 1 0 0 2v1a1 1 0 1 0 0 2v1a1 1 0 1 0 0 2v1a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H7Zm3 8a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm-1 7a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3 1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="ms-3 lg:hidden lg:group-hover:block">Koneksi</span>
-                    </a>
-                </li>
-            </ul>
+    <!-- Content Section -->
+    <div class="flex-1 overflow-y-auto py-4 scrollbar-hide">
+      <nav class="hs-accordion-group px-4 w-full flex flex-col flex-wrap gap-6" data-hs-accordion-always-open>
+        <!-- Profil Section -->
+        <div>
+          <h3
+            class="text-xs font-black text-text-secondary uppercase tracking-[0.2em] px-2 mb-3 lg:hidden lg:group-hover:block border-b-2 border-border-muted pb-1">
+            Profil</h3>
+          {% with active_nav=profile_active|default:'' %}
+          <ul class="flex flex-col space-y-2 lg:items-center lg:group-hover:items-stretch">
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 {% if active_nav == 'profile' %}
+                    border-playful-ink bg-playful-mint shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                  {% else %}
+                    border-transparent hover:border-playful-ink hover:bg-playful-mint/20
+                  {% endif %}" href="{% url 'users:profile' %}">
+                <span class="text-xl">👤</span>
+                <span class="lg:hidden lg:group-hover:block">Profile</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 {% if active_nav == 'password' %}
+                    border-playful-ink bg-playful-sky shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                  {% else %}
+                    border-transparent hover:border-playful-ink hover:bg-playful-sky/20
+                  {% endif %}" href="/accounts/password/set">
+                <span class="text-xl">🔑</span>
+                <span class="lg:hidden lg:group-hover:block">Password</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 {% if active_nav == 'email' %}
+                    border-playful-ink bg-playful-lavender shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                  {% else %}
+                    border-transparent hover:border-playful-ink hover:bg-playful-lavender/20
+                  {% endif %}" href="/accounts/email">
+                <span class="text-xl">📧</span>
+                <span class="lg:hidden lg:group-hover:block">Email</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 {% if active_nav == 'social' %}
+                    border-playful-ink bg-playful-butter shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                  {% else %}
+                    border-transparent hover:border-playful-ink hover:bg-playful-butter/20
+                  {% endif %}" href="/accounts/3rdparty">
+                <span class="text-xl">🔗</span>
+                <span class="lg:hidden lg:group-hover:block">Connection</span>
+              </a>
+            </li>
+          </ul>
+          {% endwith %}
         </div>
 
-
-    </nav>
-</div>
-
-<!-- Bottom Menu Section -->
-<div class="px-6 lg:px-3 lg:group-hover:px-6 pb-4 mt-auto border-t pt-4"
-    style="border-color: var(--g-color-border-furniture);">
-    <div class="flex justify-between items-center">
-        {% include 'components/theme-toggle.html' %}
-        {% include 'pages/users/components/profile_login.html' %}
+        <!-- Courses Section -->
+        <div>
+          <h3
+            class="text-xs font-black text-text-secondary uppercase tracking-[0.2em] px-2 mb-3 lg:hidden lg:group-hover:block border-b-2 border-border-muted pb-1">
+            Pembelajaran</h3>
+          {% with active_nav=profile_active|default:'' %}
+          <ul class="flex flex-col space-y-2 lg:items-center lg:group-hover:items-stretch">
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 {% if active_nav == 'my_modules' %}
+                    border-playful-ink bg-playful-sky shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                  {% else %}
+                    border-transparent hover:border-playful-ink hover:bg-playful-sky/20
+                  {% endif %}" href="{% url 'lms:my_modules' %}">
+                <span class="text-xl">🧩</span>
+                <span class="lg:hidden lg:group-hover:block">Modul Saya</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 {% if active_nav == 'my_tokens' %}
+                    border-playful-ink bg-playful-lavender shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                  {% else %}
+                    border-transparent hover:border-playful-ink hover:bg-playful-lavender/20
+                  {% endif %}" href="{% url 'lms:user_tokens' %}">
+                <span class="text-xl">🎟️</span>
+                <span class="lg:hidden lg:group-hover:block">Token Saya</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 {% if active_nav == 'payment_history' %}
+                    border-playful-ink bg-playful-coral shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+                  {% else %}
+                    border-transparent hover:border-playful-ink hover:bg-playful-coral/20
+                  {% endif %}" href="{% url 'lms:payment_history' %}">
+                <span class="text-xl">💳</span>
+                <span class="lg:hidden lg:group-hover:block">Riwayat Pembayaran</span>
+              </a>
+            </li>
+            <li>
+              <a class="flex items-center gap-3 px-4 py-3 text-sm font-bold text-text-primary rounded-xl border-2 transition-all duration-200 hover-lift lg:w-full lg:justify-center lg:px-0 lg:gap-0 lg:group-hover:justify-start lg:group-hover:px-4 lg:group-hover:gap-3 hover:border-playful-ink hover:bg-playful-butter/20"
+                href="/course/">
+                <span class="text-xl">📖</span>
+                <span class="lg:hidden lg:group-hover:block">Katalog Kursus</span>
+              </a>
+            </li>
+          </ul>
+          {% endwith %}
+        </div>
+      </nav>
     </div>
+
+    <!-- Bottom Menu Section -->
+    <div class="px-6 lg:px-4 lg:group-hover:px-6 pb-6 mt-auto pt-4 border-t-2 border-border-muted">
+      <div class="flex justify-between items-center gap-2">
+        <div class="w-full">
+          {% include 'pages/users/components/profile_login.html' %}
+        </div>
+        <form method="post" action="/accounts/logout/" class="m-0 lg:hidden lg:group-hover:block">
+          {% csrf_token %}
+          <button type="submit"
+            class="w-10 h-10 flex items-center justify-center text-xl rounded-full border-2 border-playful-ink bg-playful-coral shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+            title="Keluar">
+            🚪
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-</div>
-<div class="lg:hidden fixed bottom-4 right-8 z-[70]">
-    <button type="button" class="p-3 rounded-full transition-all duration-300 hover:shadow-lg"
-        style="background-color: var(--g-color-surface-button-default); color: var(--g-color-text-button); border: 1px solid var(--g-color-border-button-outline-default);"
-        data-hs-overlay="#hs-application-sidebar" aria-controls="hs-application-sidebar" aria-label="Toggle navigation">
-        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-    </button>
+<div class="lg:hidden fixed bottom-6 right-6 z-[70]">
+  <button type="button"
+    class="neo-btn-icon bg-playful-butter text-playful-ink w-14 h-14 rounded-full shadow-lg hover:scale-110 animate-bounce flex items-center justify-center border-2 border-playful-ink"
+    data-hs-overlay="#hs-application-sidebar" aria-controls="hs-application-sidebar" aria-label="Toggle navigation">
+    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
 </div>
 <!-- End Sidebar -->

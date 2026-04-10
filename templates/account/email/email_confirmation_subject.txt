@@ -1,0 +1,1 @@
+{% load i18n %}{% autoescape off %}{% trans "Verifikasi Email Anda" %}{% endautoescape %}

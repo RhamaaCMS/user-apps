@@ -6,16 +6,40 @@
     {% translate "Recovery Codes" as heading %}
     {% blocktranslate asvar subheading %}You are about to generate a new set of recovery codes for your account.{% endblocktranslate %}
     {% #container heading=heading subheading=subheading %}
-    <p class="py-3">
-        {% if unused_code_count %}
-            {% blocktranslate %}This action will invalidate your existing codes.{% endblocktranslate %}
-        {% endif %}
-        {% blocktranslate %}Are you sure?{% endblocktranslate %}
-    </p>
-    {% url 'mfa_generate_recovery_codes' as action_url %}
-    {% trans "Generate" as button_text %}
-    {% #form url=action_url form=form button_text=button_text %}
-    {% csrf_token %}
-    {% /form %}
+    <div class="space-y-6">
+        <section class="neo-card border-playful-ink bg-playful-cream/70 p-6    -up">
+            <div class="flex items-start gap-3">
+                <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-coral/40 text-playful-ink">⚠️</span>
+                <div class="space-y-2">
+                    {% if unused_code_count %}
+                        <p class="text-sm font-semibold text-text-primary">
+                            {% blocktranslate %}Tindakan ini akan menonaktifkan kode pemulihanmu yang sekarang.{% endblocktranslate %}
+                        </p>
+                    {% endif %}
+                    <p class="text-sm text-text-secondary">
+                        {% blocktranslate %}Kode baru akan digenerate dan hanya bisa digunakan sekali. Simpan di tempat aman, misalnya pengelola kata sandi atau catatan offline yang terenkripsi.{% endblocktranslate %}
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        {% url 'mfa_generate_recovery_codes' as action_url %}
+        {% trans "Generate" as button_text %}
+        {% #form url=action_url form=form button_text=button_text use_default_button="false" %}
+        {% csrf_token %}
+        <div class="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <button type="submit" class="neo-btn hover-bounce justify-center gap-2">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14"></path>
+                    <path d="M5 12h14"></path>
+                </svg>
+                {% trans "Generate new codes" %}
+            </button>
+            <a href="{% url "mfa_recovery_codes_index" %}" class="neo-btn-outline hover-bounce justify-center gap-2">
+                {% trans "Batal" %}
+            </a>
+        </div>
+        {% /form %}
+    </div>
     {% /container %}
 {% endblock content %}

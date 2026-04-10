@@ -1,14 +1,66 @@
 {% extends "account/reauthenticate.html" %}
 {% load i18n %}
 {% load allauth_ui %}
+{% load widget_tweaks %}
 {% block reauthenticate_content %}
-    <div class="mt-5">
-        {% blocktranslate %}Enter your password:{% endblocktranslate %}
-    </div>
     {% url 'account_reauthenticate' as action_url %}
-    {% trans "Confirm" as button_text %}
-    {% #form form=form url=action_url button_text=button_text %}
-    {{ redirect_field }}
-    {% csrf_token %}
-    {% /form %}
+    <div class="space-y-6  -up">
+        <div class="flex items-start gap-3 rounded-xl border-3 border-playful-ink bg-playful-sky/40 p-4">
+            <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border-3 border-playful-ink bg-playful-butter text-playful-ink">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V9"></path>
+                    <path d="M4 9V6L12 3l8 3v3"></path>
+                    <path d="M12 12v4"></path>
+                </svg>
+            </div>
+            <div class="space-y-2 text-sm text-text-secondary">
+                <p class="font-semibold text-text-primary">{% trans "Masukkan kata sandimu untuk melanjutkan." %}</p>
+                <p>{% trans "Langkah ini memastikan hanya kamu yang dapat mengakses pengaturan penting akun." %}</p>
+            </div>
+        </div>
+
+        <form method="post" action="{{ action_url }}" class="space-y-5">
+            {% csrf_token %}
+            {{ redirect_field }}
+
+            {% if form.non_field_errors %}
+                <div class="rounded-xl border-3 border-playful-coral bg-playful-coral/30 p-4 text-sm text-text-primary shake-error">
+                    <ul class="space-y-1">
+                        {% for error in form.non_field_errors %}
+                            <li>• {{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% for field in form.visible_fields %}
+                <div class="space-y-2">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-text-primary">
+                        {{ field.label }}
+                    </label>
+                    {% render_field field class="neo-input w-full px-4 py-3 placeholder:text-text-placeholder" placeholder=field.label %}
+                    {% if field.help_text %}
+                        <p class="text-xs text-text-secondary">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="text-xs font-semibold text-text-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="neo-btn hover-bounce w-full justify-center gap-2">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
+                {% trans "Konfirmasi" %}
+            </button>
+
+            <div class="text-center text-sm">
+                <a href="{% url 'account_reset_password' %}" class="text-text-link hover:underline">
+                    {% trans "Lupa kata sandi?" %}
+                </a>
+            </div>
+        </form>
+    </div>
 {% endblock reauthenticate_content %}
