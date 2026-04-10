@@ -1,14 +1,15 @@
+import importlib
+
 from django.apps import AppConfig
 
 
 class UsersConfig(AppConfig):
     default_auto_field: str = "django.db.models.AutoField"
-    name = "apps.users"
-    label = "users"
+    # Installed as apps/<folder>/; module is apps.<folder> (e.g. apps.users)
+    name = __package__
 
     def ready(self):
-        # Ensure signals are loaded
-        import apps.users.signals  # noqa: F401
+        importlib.import_module(f"{__package__}.signals")
 
         # Dynamically inject allauth URLs at the project root to expose
         # un-namespaced URL names like 'account_signup' expected by allauth.

@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0.0",
+  "name": "User Management",
+  "slug": "{app_name}",
+  "version": "1.0.0",
+  "description": "django-allauth + allauth-ui + profile views; Wagtail UserProfile avatar. Use URL namespace 'users' so {% url 'users:profile' %} stays valid.",
+  "author": "RhamaaCMS",
+  "django": {
+    "installed_apps": [
+      "allauth_ui",
+      "django.contrib.sites",
+      "allauth",
+      "allauth.account",
+      "allauth.socialaccount",
+      "widget_tweaks",
+      "apps.{app_name}"
+    ],
+    "middleware": [
+      {
+        "class": "allauth.account.middleware.AccountMiddleware",
+        "priority": 50,
+        "position": "after:django.contrib.auth.middleware.AuthenticationMiddleware"
+      }
+    ],
+    "templates": null,
+    "auth_backends": [
+      "django.contrib.auth.backends.ModelBackend",
+      "allauth.account.auth_backends.AuthenticationBackend"
+    ],
+    "settings": {
+      "SITE_ID": 1,
+      "LOGIN_REDIRECT_URL": "/",
+      "LOGOUT_REDIRECT_URL": "/",
+      "ACCOUNT_LOGIN_METHODS": ["email", "username"],
+      "ACCOUNT_SIGNUP_FIELDS": [
+        "email*",
+        "username*",
+        "password1*",
+        "password2*"
+      ],
+      "ACCOUNT_UNIQUE_EMAIL": true,
+      "ACCOUNT_EMAIL_VERIFICATION": "optional",
+      "ACCOUNT_AUTHENTICATION_METHOD": "username_email",
+      "ACCOUNT_EMAIL_REQUIRED": true,
+      "ACCOUNT_USERNAME_REQUIRED": true
+    }
+  },
+  "urls": [
+    {
+      "path": "{app_name}/",
+      "include": "apps.{app_name}.urls",
+      "namespace": "users",
+      "name": "users_app"
+    }
+  ],
+  "dependencies": {
+    "apps": [],
+    "packages": [
+      "django-allauth",
+      "django-allauth-ui",
+      "django-widget-tweaks",
+      "requests"
+    ],
+    "optional_apps": []
+  },
+  "staticfiles": null,
+  "post_install": {
+    "migrations": true,
+    "fixtures": [],
+    "management_commands": [],
+    "messages": [
+      "Requires Wagtail (wagtail.users.models.UserProfile) — use a RhamaaCMS / Wagtail project.",
+      "After install: pip install django-allauth django-allauth-ui django-widget-tweaks requests (or pip install -r apps/{app_name}/requirements.txt).",
+      "Ensure django.contrib.sites is migrated and Site id=1 exists (SITE_ID=1).",
+      "If your project merges per-app settings, you can still merge apps/{app_name}/settings.py for overrides."
+    ]
+  }
+}
